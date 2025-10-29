@@ -1,0 +1,1922 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Skill Shack — Buy Products, Unlock Skills</title>
+  <meta name="description" content="Every product includes a free learning course. Shop smart and unlock your potential." />
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #2d6a4f;
+      --primary-dark: #1b4332;
+      --primary-light: #40916c;
+      --accent: #f4a261;
+      --accent-dark: #e76f51;
+      --bg: #fefefe;
+      --bg-alt: #f8f9fa;
+      --text: #212529;
+      --text-light: #6c757d;
+      --card-bg: #ffffff;
+      --shadow: 0 10px 40px rgba(0,0,0,0.08);
+      --shadow-hover: 0 15px 50px rgba(0,0,0,0.12);
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    .login-page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .login-container {
+      background: white;
+      border-radius: 25px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      overflow: hidden;
+      max-width: 900px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      animation: slideUp 0.6s ease;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .login-left {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .login-left h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .login-left p {
+      font-size: 1.1rem;
+      opacity: 0.95;
+      margin-bottom: 2rem;
+    }
+
+    .login-features {
+      text-align: left;
+      width: 100%;
+    }
+
+    .login-features div {
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .login-right {
+      padding: 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .login-right h2 {
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+      font-size: 2rem;
+    }
+
+    .login-right p {
+      color: var(--text-light);
+      margin-bottom: 2rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 0.9rem 1.2rem;
+      border: 2px solid #e9ecef;
+      border-radius: 50px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(45, 106, 79, 0.1);
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 1rem;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 1rem;
+    }
+
+    .login-btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 20px rgba(45, 106, 79, 0.4);
+    }
+
+    .login-links {
+      margin-top: 1.5rem;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    .login-links a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .login-links a:hover {
+      text-decoration: underline;
+    }
+
+    .main-app {
+      display: none;
+    }
+
+    .main-app.active {
+      display: block;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+      z-index: 1000;
+      transition: all 0.3s ease;
+    }
+
+    .nav-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      font-size: 2rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 500;
+      transition: color 0.3s ease;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--primary);
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .cart-btn, .logout-btn {
+      background: var(--primary);
+      color: white;
+      padding: 0.6rem 1.5rem;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(45, 106, 79, 0.3);
+    }
+
+    .cart-btn:hover, .logout-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(45, 106, 79, 0.4);
+    }
+
+    .logout-btn {
+      background: var(--accent-dark);
+      margin-left: 1rem;
+    }
+
+    .hero {
+      margin-top: 80px;
+      padding: 4rem 2rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      animation: rotate 20s linear infinite;
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .hero-content {
+      max-width: 900px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      animation: fadeInUp 0.8s ease;
+    }
+
+    .hero p {
+      font-size: 1.3rem;
+      margin-bottom: 2rem;
+      opacity: 0.95;
+      animation: fadeInUp 0.8s ease 0.2s backwards;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      backdrop-filter: blur(10px);
+      padding: 0.8rem 1.5rem;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 2rem;
+      animation: fadeInUp 0.8s ease 0.4s backwards;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      animation: fadeInUp 0.8s ease 0.6s backwards;
+    }
+
+    .btn {
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background: white;
+      color: var(--primary);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 25px rgba(0,0,0,0.3);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: white;
+      border: 2px solid white;
+    }
+
+    .btn-secondary:hover {
+      background: white;
+      color: var(--primary);
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .search-section {
+      max-width: 1400px;
+      margin: -3rem auto 3rem;
+      padding: 0 2rem;
+      position: relative;
+      z-index: 10;
+    }
+
+    .search-bar {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .search-input {
+      flex: 1;
+      min-width: 250px;
+      padding: 0.8rem 1.2rem;
+      border: 2px solid #e9ecef;
+      border-radius: 50px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(45, 106, 79, 0.1);
+    }
+
+    .filter-select {
+      padding: 0.8rem 1.5rem;
+      border: 2px solid #e9ecef;
+      border-radius: 50px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .filter-select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .section-header h2 {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-header p {
+      font-size: 1.1rem;
+      color: var(--text-light);
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .product-card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: all 0.4s ease;
+      cursor: pointer;
+      animation: fadeIn 0.6s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-10px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .product-image {
+      width: 100%;
+      height: 250px;
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 8rem;
+      transition: transform 0.4s ease;
+    }
+
+    .product-card:hover .product-image {
+      transform: scale(1.05);
+    }
+
+    .product-info {
+      padding: 1.5rem;
+    }
+
+    .product-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.8rem;
+    }
+
+    .product-desc {
+      color: var(--text);
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+    }
+
+    .product-highlights {
+      background: #f8f9fa;
+      padding: 0.8rem;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      font-size: 0.85rem;
+    }
+
+    .product-highlights ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+
+    .product-highlights li {
+      padding: 0.25rem 0;
+    }
+
+    .product-highlights li::before {
+      content: '• ';
+      color: var(--primary);
+      font-weight: bold;
+      margin-right: 0.5rem;
+    }
+
+    .course-badge {
+      background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+      color: #d63031;
+      padding: 0.6rem 1rem;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-bottom: 1rem;
+    }
+
+    .product-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 2px solid #f8f9fa;
+    }
+
+    .product-price {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .add-to-cart {
+      background: var(--primary);
+      color: white;
+      padding: 0.7rem 1.5rem;
+      border: none;
+      border-radius: 50px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .add-to-cart:hover {
+      background: var(--primary-dark);
+      transform: scale(1.05);
+    }
+
+    .about-section {
+      background: white;
+      padding: 4rem 2rem;
+      margin-top: 3rem;
+    }
+
+    .about-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .about-content h2 {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+    }
+
+    .about-content p {
+      font-size: 1.1rem;
+      color: var(--text-light);
+      margin-bottom: 1.5rem;
+      line-height: 1.8;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .feature-card {
+      background: var(--bg-alt);
+      padding: 2rem;
+      border-radius: 15px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow);
+    }
+
+    .feature-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .feature-card h3 {
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .contact-section {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 4rem 2rem;
+    }
+
+    .contact-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .contact-content h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .contact-card {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      padding: 2rem;
+      border-radius: 15px;
+      text-align: center;
+    }
+
+    .contact-card h3 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    footer {
+      background: #1b1b1b;
+      color: white;
+      padding: 3rem 2rem 1rem;
+    }
+
+    .footer-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer-section h3 {
+      margin-bottom: 1rem;
+      color: var(--primary-light);
+    }
+
+    .footer-section ul {
+      list-style: none;
+    }
+
+    .footer-section ul li {
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-section a {
+      color: #ccc;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      cursor: pointer;
+    }
+
+    .footer-section a:hover {
+      color: var(--primary-light);
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 2rem;
+      border-top: 1px solid #333;
+      color: #888;
+    }
+
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(5px);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal {
+      background: white;
+      border-radius: 25px;
+      max-width: 900px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      animation: slideUp 0.4s ease;
+    }
+
+    .modal-header {
+      padding: 2rem;
+      border-bottom: 2px solid #f8f9fa;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 2rem;
+      cursor: pointer;
+      color: var(--text-light);
+      transition: all 0.3s ease;
+    }
+
+    .modal-close:hover {
+      color: var(--accent-dark);
+      transform: rotate(90deg);
+    }
+
+    .modal-body {
+      padding: 2rem;
+    }
+
+    .modal-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .modal-image {
+      width: 100%;
+      height: 300px;
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 8rem;
+    }
+
+    .course-highlight {
+      background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+      padding: 1.5rem;
+      border-radius: 15px;
+      margin-top: 1rem;
+    }
+
+    .course-highlight h3 {
+      color: #d63031;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .course-highlight p {
+      color: #2d3436;
+      font-size: 0.95rem;
+    }
+
+    .cart-sidebar {
+      position: fixed;
+      right: -400px;
+      top: 0;
+      width: 400px;
+      height: 100vh;
+      background: white;
+      box-shadow: -5px 0 25px rgba(0,0,0,0.2);
+      z-index: 3000;
+      transition: right 0.4s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cart-sidebar.active {
+      right: 0;
+    }
+
+    .cart-header {
+      padding: 2rem;
+      border-bottom: 2px solid #f8f9fa;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .cart-items {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.5rem;
+    }
+
+    .cart-item {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid #f8f9fa;
+    }
+
+    .cart-item-image {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      flex-shrink: 0;
+    }
+
+    .cart-item-info {
+      flex: 1;
+    }
+
+    .cart-item-title {
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+      font-size: 0.95rem;
+    }
+
+    .cart-item-course {
+      font-size: 0.8rem;
+      color: #d63031;
+      margin-bottom: 0.5rem;
+    }
+
+    .qty-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .qty-btn {
+      width: 30px;
+      height: 30px;
+      border: none;
+      background: var(--bg-alt);
+      border-radius: 50%;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .qty-btn:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    .cart-footer {
+      padding: 2rem;
+      border-top: 2px solid #f8f9fa;
+      background: var(--bg-alt);
+    }
+
+    .cart-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    .courses-unlocked {
+      background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+      padding: 1rem;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      text-align: center;
+      font-weight: 600;
+      color: #d63031;
+    }
+
+    .checkout-btn {
+      width: 100%;
+      padding: 1rem;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .checkout-btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 20px rgba(45, 106, 79, 0.4);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--primary);
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: 50px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+      z-index: 4000;
+      animation: slideInRight 0.4s ease;
+      display: none;
+    }
+
+    .toast.active {
+      display: block;
+    }
+
+    @keyframes slideInRight {
+      from {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    .empty-cart {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--text-light);
+    }
+
+    .rating {
+      color: #ffa500;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .stock-info {
+      color: var(--primary);
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .prime-badge {
+      background: #00a8e1;
+      color: white;
+      padding: 0.3rem 0.6rem;
+      border-radius: 5px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      display: inline-block;
+      margin-bottom: 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2rem;
+      }
+      .nav-links {
+        display: none;
+      }
+      .modal-grid, .login-container {
+        grid-template-columns: 1fr;
+      }
+      .login-left {
+        display: none;
+      }
+      .cart-sidebar {
+        width: 100%;
+        right: -100%;
+      }
+      .products-grid {
+        grid-template-columns: 1fr;
+      }
+      .cta-buttons {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-page" id="loginPage">
+    <div class="login-container">
+      <div class="login-left">
+        <h1>🌿 Skill Shack</h1>
+        <p>Every Purchase Unlocks Skills</p>
+        <div class="login-features">
+          <div>✓ Free courses with every product</div>
+          <div>✓ Lifetime access to learning</div>
+          <div>✓ Expert-designed curriculum</div>
+          <div>✓ Eco-friendly products</div>
+        </div>
+      </div>
+      <div class="login-right">
+        <h2>Welcome Back!</h2>
+        <p>Login to continue your learning journey</p>
+        <form onsubmit="handleLogin(event)">
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" placeholder="Enter your email" required />
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Enter your password" required />
+          </div>
+          <button type="submit" class="login-btn">Login</button>
+        </form>
+        <div class="login-links">
+          <p>Don't have an account? <a href="#" onclick="alert('Sign up coming soon!'); return false;">Sign Up</a></p>
+          <p><a href="#" onclick="alert('Password reset link sent!'); return false;">Forgot Password?</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-app" id="mainApp">
+    <nav>
+      <div class="nav-container">
+        <a href="#" class="logo" onclick="scrollToSection('home'); return false;">
+          <span class="logo-icon">🌿</span>
+          <span>Skill Shack</span>
+        </a>
+        <ul class="nav-links">
+          <li><a onclick="scrollToSection('home')">Home</a></li>
+          <li><a onclick="scrollToSection('products')">Products</a></li>
+          <li><a onclick="showAllCourses()">Courses</a></li>
+          <li><a onclick="scrollToSection('about')">About</a></li>
+          <li><a onclick="scrollToSection('contact')">Contact</a></li>
+        </ul>
+        <div style="display: flex; align-items: center;">
+          <button class="cart-btn" onclick="toggleCart()">
+            <span>🛒</span>
+            <span>Cart (<span id="cartCount">0</span>)</span>
+          </button>
+          <button class="logout-btn" onclick="handleLogout()">Logout</button>
+        </div>
+      </div>
+    </nav>
+
+    <section class="hero" id="home">
+      <div class="hero-content">
+        <div class="hero-badge">🎓 Every Product = Free Course</div>
+        <h1>Shop Smart. Learn More.</h1>
+        <p>Buy products you love and unlock free educational courses. From photography to yoga, gardening to cooking—grow your skills with every purchase!</p>
+        <div class="cta-buttons">
+          <button class="btn btn-primary" onclick="scrollToSection('products')">Explore Products</button>
+          <button class="btn btn-secondary" onclick="showAllCourses()">View All Courses</button>
+        </div>
+      </div>
+    </section>
+
+    <div class="search-section">
+      <div class="search-bar">
+        <input type="text" class="search-input" id="searchInput" placeholder="Search for products or courses..." oninput="filterProducts()">
+        <select class="filter-select" id="categoryFilter" onchange="filterProducts()">
+          <option value="">All Categories</option>
+          <option value="photography">Photography</option>
+          <option value="art">Art & Crafts</option>
+          <option value="fitness">Fitness & Wellness</option>
+          <option value="gardening">Gardening</option>
+          <option value="cooking">Cooking</option>
+          <option value="lifestyle">Lifestyle</option>
+        </select>
+      </div>
+    </div>
+
+    <section class="container" id="products">
+      <div class="section-header">
+        <h2>Featured Products</h2>
+        <p>Each product comes with a professionally designed free learning course</p>
+      </div>
+      <div class="products-grid" id="productsGrid"></div>
+    </section>
+
+    <section class="about-section" id="about">
+      <div class="about-content">
+        <h2>About Skill Shack</h2>
+        <p>Skill Shack is revolutionizing online shopping by combining quality eco-friendly products with free educational courses. We believe that every purchase should be an investment in yourself and the planet.</p>
+        <p>Our mission is to make learning accessible to everyone. When you buy a camera, you shouldn't just get hardware—you should unlock the knowledge to use it masterfully.</p>
+        
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">🎓</div>
+            <h3>Free Courses</h3>
+            <p>Every product includes a comprehensive learning course designed by industry experts</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🌱</div>
+            <h3>Eco-Friendly</h3>
+            <p>We carefully curate sustainable products that are good for you and the planet</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">✨</div>
+            <h3>Quality Guaranteed</h3>
+            <p>All products are tested and verified to meet our high quality standards</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📦</div>
+            <h3>Fast Delivery</h3>
+            <p>Quick and reliable shipping with eco-friendly packaging materials</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact-section" id="contact">
+      <div class="contact-content">
+        <h2>Get In Touch</h2>
+        <p style="text-align: center; margin-bottom: 2rem;">Have questions? We're here to help!</p>
+        
+        <div class="contact-grid">
+          <div class="contact-card">
+            <h3>📍</h3>
+            <h4>Visit Us</h4>
+            <p>Hyderabad, Telangana</p>
+            <p>India</p>
+          </div>
+          <div class="contact-card">
+            <h3>📧</h3>
+            <h4>Email Us</h4>
+            <p>support@skillshack.com</p>
+            <p>info@skillshack.com</p>
+          </div>
+          <div class="contact-card">
+            <h3>📞</h3>
+            <h4>Call Us</h4>
+            <p>+91 1800-123-4567</p>
+            <p>Mon-Sat: 9AM - 6PM IST</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>🌿 Skill Shack</h3>
+          <p>Shop Smart. Learn More.</p>
+          <p style="margin-top: 1rem; color: #888;">Making education accessible through every purchase.</p>
+        </div>
+        
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a onclick="scrollToSection('home')">Home</a></li>
+            <li><a onclick="scrollToSection('products')">Products</a></li>
+            <li><a onclick="showAllCourses()">Free Courses</a></li>
+            <li><a onclick="scrollToSection('about')">About Us</a></li>
+            <li><a onclick="scrollToSection('contact')">Contact</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h3>Customer Service</h3>
+          <ul>
+            <li><a onclick="showModal('faq')">FAQ</a></li>
+            <li><a onclick="showModal('shipping')">Shipping Info</a></li>
+            <li><a onclick="showModal('returns')">Returns & Refunds</a></li>
+            <li><a onclick="showModal('privacy')">Privacy Policy</a></li>
+            <li><a onclick="showModal('terms')">Terms & Conditions</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h3>Categories</h3>
+          <ul>
+            <li><a onclick="filterByCategory('photography')">Photography</a></li>
+            <li><a onclick="filterByCategory('art')">Art & Crafts</a></li>
+            <li><a onclick="filterByCategory('fitness')">Fitness & Wellness</a></li>
+            <li><a onclick="filterByCategory('gardening')">Gardening</a></li>
+            <li><a onclick="filterByCategory('cooking')">Cooking</a></li>
+            <li><a onclick="filterByCategory('lifestyle')">Lifestyle</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2025 Skill Shack. All rights reserved. | Designed with 💚 for learners and planet lovers.</p>
+      </div>
+    </footer>
+
+    <div class="cart-sidebar" id="cartSidebar">
+      <div class="cart-header">
+        <h2>Your Cart</h2>
+        <button class="modal-close" onclick="toggleCart()">×</button>
+      </div>
+      <div class="cart-items" id="cartItems"></div>
+      <div class="cart-footer">
+        <div class="courses-unlocked" id="coursesInfo">
+          🎓 0 Free Courses Unlocked
+        </div>
+        <div class="cart-total">
+          <span>Total:</span>
+          <span id="cartTotal">₹0</span>
+        </div>
+        <button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+      <div class="modal" id="modal" onclick="event.stopPropagation()"></div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+  </div>
+
+  <script>
+    const PRODUCTS = [
+      {
+        id: 1,
+        title: 'Professional DSLR Camera Bundle Kit',
+        price: 25000,
+        category: 'photography',
+        icon: '📷',
+        description: '24.2MP | Full HD Video | WiFi & NFC',
+        amazonDesc: 'Capture stunning photos with this professional DSLR camera bundle.',
+        highlights: ['24.2MP sensor', 'Full HD video', 'WiFi enabled', 'IS STM lens', 'Touchscreen LCD', 'ISO 100-6400'],
+        course: 'Photography Masterclass',
+        courseDesc: 'Master professional photography with this 50-hour comprehensive course.',
+        emoji: '📸',
+        rating: 4.8,
+        reviews: 2847,
+        inStock: true
+      },
+      {
+        id: 2,
+        title: 'Premium Acrylic Painting Set - 52 Piece',
+        price: 1200,
+        category: 'art',
+        icon: '🎨',
+        description: '24 Colors | 12 Brushes | 2 Canvases',
+        amazonDesc: 'Complete 52-piece professional painting kit.',
+        highlights: ['24 paint colors', '12 brushes', '2 canvases', 'Wooden palette', 'Palette knives', 'Tabletop easel'],
+        course: 'Complete Art Workshop',
+        courseDesc: '40-hour painting course covering techniques and theory.',
+        emoji: '🎨',
+        rating: 4.7,
+        reviews: 1523,
+        inStock: true
+      },
+      {
+        id: 3,
+        title: 'Eco Yoga Mat Set - 6mm Complete Kit',
+        price: 900,
+        category: 'fitness',
+        icon: '🧘',
+        description: 'Natural Rubber | Non-Slip | 72"x24"',
+        amazonDesc: 'Eco-friendly yoga mat with superior comfort.',
+        highlights: ['6mm thick', 'Non-slip surface', 'Extra large', 'Carrying bag', '2 yoga blocks', 'PVC free'],
+        course: 'Yoga Transformation Program',
+        courseDesc: '60-hour program covering asanas and wellness.',
+        emoji: '🧘',
+        rating: 4.9,
+        reviews: 3156,
+        inStock: true
+      },
+      {
+        id: 4,
+        title: 'Gardening Tools Set - 10 Piece',
+        price: 1800,
+        category: 'gardening',
+        icon: '🌱',
+        description: 'Stainless Steel | Ergonomic',
+        amazonDesc: 'Premium 10-piece gardening toolkit.',
+        highlights: ['Rust-resistant steel', 'Ergonomic handles', 'Pruning shears', 'Heavy-duty gloves', 'Knee pad', 'Storage bag'],
+        course: 'Gardening 101 Guide',
+        courseDesc: '35-hour course on gardening practices.',
+        emoji: '🌱',
+        rating: 4.6,
+        reviews: 892,
+        inStock: true
+      },
+      {
+        id: 5,
+        title: 'Woodworking Tools Set - 25 Piece',
+        price: 2500,
+        category: 'lifestyle',
+        icon: '🪵',
+        description: 'Carbon Steel | Precision Tools',
+        amazonDesc: 'Complete 25-piece woodworking toolkit.',
+        highlights: ['25 essential tools', 'Carbon steel', 'Chisel set', 'Measuring tools', 'Safety gear', 'Tool bag'],
+        course: 'Woodcraft Furniture Making',
+        courseDesc: '45-hour woodworking course.',
+        emoji: '🪵',
+        rating: 4.7,
+        reviews: 647,
+        inStock: true
+      },
+      {
+        id: 6,
+        title: 'Insulated Water Bottle - 1 Liter',
+        price: 600,
+        category: 'lifestyle',
+        icon: '💧',
+        description: '24hr Cold | 12hr Hot | Leak-Proof',
+        amazonDesc: 'Premium vacuum-insulated bottle.',
+        highlights: ['1L capacity', 'Vacuum insulation', '24hr cold', 'Leak-proof cap', 'BPA-free', 'Fits cup holders'],
+        course: 'Sustainable Living Guide',
+        courseDesc: '30-hour course on sustainability.',
+        emoji: '🌍',
+        rating: 4.8,
+        reviews: 4523,
+        inStock: true
+      },
+      {
+        id: 7,
+        title: 'Non-Stick Cookware Set - 12 Piece',
+        price: 1700,
+        category: 'cooking',
+        icon: '🍳',
+        description: 'Ceramic | Oven Safe 450°F',
+        amazonDesc: 'Complete 12-piece cookware set.',
+        highlights: ['12-piece set', 'Ceramic coating', 'Induction compatible', 'Oven safe', '4 utensils', 'Dishwasher safe'],
+        course: 'Home Cooking Masterclass',
+        courseDesc: '55-hour culinary course.',
+        emoji: '👨‍🍳',
+        rating: 4.9,
+        reviews: 2134,
+        inStock: true
+      },
+      {
+        id: 8,
+        title: 'Home Décor Collection - 8 Piece',
+        price: 2200,
+        category: 'lifestyle',
+        icon: '🏠',
+        description: 'Ceramic | Photo Frames | Minimalist',
+        amazonDesc: 'Curated 8-piece modern décor collection.',
+        highlights: ['8-piece set', 'Minimalist design', 'Ceramic materials', 'Neutral colors', 'Frames included', 'Ready to display'],
+        course: 'Interior Design Fundamentals',
+        courseDesc: '40-hour interior design course.',
+        emoji: '🏡',
+        rating: 4.6,
+        reviews: 1067,
+        inStock: true
+      },
+      {
+        id: 9,
+        title: 'DIY Craft Supplies - 100+ Items',
+        price: 950,
+        category: 'art',
+        icon: '✂️',
+        description: 'Paper | Scissors | Ribbons',
+        amazonDesc: 'Massive craft supplies collection.',
+        highlights: ['100+ items', 'Paper and tools', 'All ages', 'Storage included', 'Eco-friendly', 'Multiple projects'],
+        course: 'DIY Craft Workshop',
+        courseDesc: '38-hour crafting course.',
+        emoji: '✂️',
+        rating: 4.7,
+        reviews: 1845,
+        inStock: true
+      },
+      {
+        id: 10,
+        title: 'Organic Skincare Set - 8 Products',
+        price: 1500,
+        category: 'lifestyle',
+        icon: '💆',
+        description: 'Natural | Cruelty-Free | Complete',
+        amazonDesc: 'Complete 8-piece organic skincare.',
+        highlights: ['8 full-size products', 'Natural ingredients', 'All skin types', 'Paraben free', 'Complete routine', 'Eco packaging'],
+        course: 'Natural Beauty Course',
+        courseDesc: '35-hour beauty course.',
+        emoji: '💆',
+        rating: 4.8,
+        reviews: 2976,
+        inStock: true
+      },
+      {
+        id: 11,
+        title: 'Laptop Stand - 7 Adjustable Heights',
+        price: 1000,
+        category: 'lifestyle',
+        icon: '💻',
+        description: '360° Rotation | Aluminum',
+        amazonDesc: 'Premium adjustable laptop stand.',
+        highlights: ['7 height positions', 'Aluminum construction', '360° rotating', 'Fits 10-17" laptops', 'Phone holder', 'Cable management'],
+        course: 'Productivity Mastery',
+        courseDesc: '30-hour productivity course.',
+        emoji: '💻',
+        rating: 4.7,
+        reviews: 1432,
+        inStock: true
+      },
+      {
+        id: 12,
+        title: 'Reusable Shopping Bags - 10 Pack',
+        price: 400,
+        category: 'lifestyle',
+        icon: '♻️',
+        description: 'Washable | Holds 50 lbs',
+        amazonDesc: 'Eco-friendly shopping bag set.',
+        highlights: ['10 assorted bags', 'Recycled materials', 'Holds 50 lbs', 'Machine washable', 'Folds flat', 'Replaces 1000+ bags'],
+        course: 'Eco Living Mini Course',
+        courseDesc: '20-hour sustainable living course.',
+        emoji: '♻️',
+        rating: 4.9,
+        reviews: 5234,
+        inStock: true
+      }
+    ];
+
+    let cart = [];
+    let isLoggedIn = false;
+
+    function handleLogin(event) {
+      event.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      
+      if (email && password) {
+        isLoggedIn = true;
+        document.getElementById('loginPage').style.display = 'none';
+        document.getElementById('mainApp').classList.add('active');
+        showToast(`Welcome back!`);
+        renderProducts();
+        updateCart();
+      }
+    }
+
+    function handleLogout() {
+      if (confirm('Are you sure you want to logout?')) {
+        isLoggedIn = false;
+        cart = [];
+        document.getElementById('mainApp').classList.remove('active');
+        document.getElementById('loginPage').style.display = 'flex';
+        document.getElementById('email').value = '';
+        document.getElementById('password').value = '';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      if (!isLoggedIn) {
+        document.getElementById('loginPage').style.display = 'flex';
+      }
+    });
+
+    function scrollToSection(id) {
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    function filterByCategory(category) {
+      document.getElementById('categoryFilter').value = category;
+      filterProducts();
+      scrollToSection('products');
+    }
+
+    function filterProducts() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      const category = document.getElementById('categoryFilter').value;
+      
+      const filtered = PRODUCTS.filter(product => {
+        const matchesSearch = !searchTerm || 
+          product.title.toLowerCase().includes(searchTerm) ||
+          product.description.toLowerCase().includes(searchTerm) ||
+          product.course.toLowerCase().includes(searchTerm);
+        
+        const matchesCategory = !category || product.category === category;
+        
+        return matchesSearch && matchesCategory;
+      });
+      
+      renderProducts(filtered);
+    }
+
+    function renderProducts(products = PRODUCTS) {
+      const grid = document.getElementById('productsGrid');
+      grid.innerHTML = '';
+      
+      if (products.length === 0) {
+        grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-light); padding: 3rem;">No products found.</p>';
+        return;
+      }
+      
+      products.forEach((product, index) => {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        card.style.animationDelay = `${index * 0.1}s`;
+        card.innerHTML = `
+          <div class="product-image">${product.icon}</div>
+          <div class="product-info">
+            <div class="prime-badge">🎓 FREE COURSE</div>
+            <h3 class="product-title">${product.title}</h3>
+            <p class="product-desc">${product.description}</p>
+            <div class="product-highlights">
+              <ul>
+                ${product.highlights.slice(0, 3).map(h => `<li>${h}</li>`).join('')}
+              </ul>
+            </div>
+            <div class="rating">
+              ${'★'.repeat(Math.floor(product.rating))}${'☆'.repeat(5 - Math.floor(product.rating))} 
+              ${product.rating} (${product.reviews.toLocaleString()})
+            </div>
+            <div class="stock-info">${product.inStock ? '✓ In Stock' : '✗ Out of Stock'}</div>
+            <div class="course-badge">
+              <span>${product.emoji}</span>
+              <span>${product.course}</span>
+            </div>
+            <div class="product-footer">
+              <span class="product-price">₹${product.price.toLocaleString()}</span>
+              <button class="add-to-cart" onclick="event.stopPropagation(); addToCart(${product.id})">Add to Cart</button>
+            </div>
+          </div>
+        `;
+        card.onclick = () => showProductModal(product.id);
+        grid.appendChild(card);
+      });
+    }
+
+    function showProductModal(id) {
+      const product = PRODUCTS.find(p => p.id === id);
+      const modal = document.getElementById('modal');
+      modal.innerHTML = `
+        <div class="modal-header">
+          <h2>${product.title}</h2>
+          <button class="modal-close" onclick="closeModalDirect()">×</button>
+        </div>
+        <div class="modal-body">
+          <div class="modal-grid">
+            <div>
+              <div class="modal-image">${product.icon}</div>
+              <div style="margin-top: 1rem;">
+                <div class="rating" style="font-size: 1.1rem;">
+                  ${'★'.repeat(Math.floor(product.rating))}${'☆'.repeat(5 - Math.floor(product.rating))} 
+                  ${product.rating} out of 5
+                </div>
+                <p style="color: var(--text-light);">${product.reviews.toLocaleString()} reviews</p>
+              </div>
+            </div>
+            <div>
+              <h3 style="color: var(--primary); margin-bottom: 1rem;">About this item</h3>
+              <p style="margin-bottom: 1.5rem;">${product.amazonDesc}</p>
+              
+              <div class="product-highlights" style="margin-bottom: 1.5rem;">
+                <h4 style="margin-bottom: 0.8rem; color: var(--primary);">Key Features:</h4>
+                <ul>
+                  ${product.highlights.map(h => `<li>${h}</li>`).join('')}
+                </ul>
+              </div>
+              
+              <div class="course-highlight">
+                <h3>${product.emoji} Free Course Included!</h3>
+                <h4 style="margin: 0.5rem 0;">${product.course}</h4>
+                <p>${product.courseDesc}</p>
+              </div>
+              
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; padding-top: 2rem; border-top: 2px solid #f8f9fa;">
+                <span style="font-size: 2rem; font-weight: 700; color: var(--primary);">₹${product.price.toLocaleString()}</span>
+                <button class="btn btn-primary" onclick="addToCart(${product.id}); closeModalDirect();">Add to Cart</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      document.getElementById('modalOverlay').classList.add('active');
+    }
+
+    function showAllCourses() {
+      const modal = document.getElementById('modal');
+      const uniqueCourses = [...new Map(PRODUCTS.map(p => [p.course, p])).values()];
+      
+      modal.innerHTML = `
+        <div class="modal-header">
+          <h2>🎓 All Free Courses</h2>
+          <button class="modal-close" onclick="closeModalDirect()">×</button>
+        </div>
+        <div class="modal-body">
+          <p style="margin-bottom: 2rem; color: var(--text-light); text-align: center;">Every product unlocks a professionally designed course!</p>
+          <div style="display: grid; gap: 1.5rem;">
+            ${uniqueCourses.map(p => `
+              <div style="background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%); padding: 1.5rem; border-radius: 15px;">
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                  <span style="font-size: 1.5rem;">${p.emoji}</span>
+                  <h3 style="margin: 0; color: #d63031;">${p.course}</h3>
+                </div>
+                <p style="color: #2d3436; margin-bottom: 0.8rem;">${p.courseDesc}</p>
+                <p style="font-size: 0.9rem; color: #636e72;">✓ Free with: <strong>${p.title}</strong> (₹${p.price.toLocaleString()})</p>
+              </div>
+            `).join('')}
+          </div>
+          <div style="text-align: center; margin-top: 2rem;">
+            <button class="btn btn-primary" onclick="closeModalDirect(); scrollToSection('products')">Start Shopping</button>
+          </div>
+        </div>
+      `;
+      document.getElementById('modalOverlay').classList.add('active');
+    }
+
+    function showModal(type) {
+      const modal = document.getElementById('modal');
+      let content = '';
+      
+      switch(type) {
+        case 'faq':
+          content = `
+            <div class="modal-header">
+              <h2>❓ FAQ</h2>
+              <button class="modal-close" onclick="closeModalDirect()">×</button>
+            </div>
+            <div class="modal-body">
+              <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--primary); margin-bottom: 0.5rem;">How do I access courses?</h3>
+                <p>You'll receive email with login credentials within 5 minutes of purchase.</p>
+              </div>
+              <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--primary); margin-bottom: 0.5rem;">Are courses really free?</h3>
+                <p>Yes! Every product includes a completely free course with no hidden fees.</p>
+              </div>
+              <div>
+                <h3 style="color: var(--primary); margin-bottom: 0.5rem;">How long do I have access?</h3>
+                <p>Lifetime access! Learn at your own pace forever.</p>
+              </div>
+            </div>
+          `;
+          break;
+        case 'shipping':
+          content = `
+            <div class="modal-header">
+              <h2>📦 Shipping Info</h2>
+              <button class="modal-close" onclick="closeModalDirect()">×</button>
+            </div>
+            <div class="modal-body">
+              <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--primary);">Delivery Times</h3>
+                <p>• Metro Cities: 2-3 days<br>• Tier 2 Cities: 3-5 days<br>• Other: 5-7 days</p>
+              </div>
+              <div>
+                <h3 style="color: var(--primary);">Shipping Costs</h3>
+                <p>• Orders above ₹500: FREE<br>• Orders below ₹500: ₹50</p>
+              </div>
+            </div>
+          `;
+          break;
+        case 'returns':
+          content = `
+            <div class="modal-header">
+              <h2>🔄 Returns</h2>
+              <button class="modal-close" onclick="closeModalDirect()">×</button>
+            </div>
+            <div class="modal-body">
+              <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--primary);">30-Day Return Policy</h3>
+                <p>Hassle-free returns within 30 days for full refund.</p>
+              </div>
+              <div style="background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%); padding: 1rem; border-radius: 10px;">
+                <strong>Special:</strong> You keep lifetime course access even after returns! 🎓
+              </div>
+            </div>
+          `;
+          break;
+        case 'privacy':
+          content = `
+            <div class="modal-header">
+              <h2>🔒 Privacy</h2>
+              <button class="modal-close" onclick="closeModalDirect()">×</button>
+            </div>
+            <div class="modal-body">
+              <p>We protect your personal information with industry-standard encryption and secure servers.</p>
+            </div>
+          `;
+break;
+        case 'terms':
+          content = `
+            <div class="modal-header">
+              <h2>📜 Terms & Conditions</h2>
+              <button class="modal-close" onclick="closeModalDirect()">×</button>
+            </div>
+            <div class="modal-body">
+              <p>By using Skill Shack, you agree to our terms of service. Products must be used responsibly and courses are for personal learning only.</p>
+            </div>
+          `;
+          break;
+      }
+      
+      modal.innerHTML = content;
+      document.getElementById('modalOverlay').classList.add('active');
+    }
+
+    function closeModal(event) {
+      if (event.target === event.currentTarget) {
+        document.getElementById('modalOverlay').classList.remove('active');
+      }
+    }
+
+    function closeModalDirect() {
+      document.getElementById('modalOverlay').classList.remove('active');
+    }
+
+    function addToCart(id) {
+      const product = PRODUCTS.find(p => p.id === id);
+      const existingItem = cart.find(item => item.id === id);
+      
+      if (existingItem) {
+        existingItem.quantity++;
+      } else {
+        cart.push({ ...product, quantity: 1 });
+      }
+      
+      updateCart();
+      showToast(`${product.icon} Added to cart!`);
+    }
+
+    function removeFromCart(id) {
+      cart = cart.filter(item => item.id !== id);
+      updateCart();
+      showToast('Item removed from cart');
+    }
+
+    function updateQuantity(id, change) {
+      const item = cart.find(item => item.id === id);
+      if (item) {
+        item.quantity += change;
+        if (item.quantity <= 0) {
+          removeFromCart(id);
+        } else {
+          updateCart();
+        }
+      }
+    }
+
+    function updateCart() {
+      const cartCount = document.getElementById('cartCount');
+      const cartItems = document.getElementById('cartItems');
+      const cartTotal = document.getElementById('cartTotal');
+      const coursesInfo = document.getElementById('coursesInfo');
+      
+      const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+      const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      const uniqueCourses = new Set(cart.map(item => item.course)).size;
+      
+      cartCount.textContent = totalItems;
+      cartTotal.textContent = `₹${totalPrice.toLocaleString()}`;
+      coursesInfo.textContent = `🎓 ${uniqueCourses} Free Course${uniqueCourses !== 1 ? 's' : ''} Unlocked`;
+      
+      if (cart.length === 0) {
+        cartItems.innerHTML = `
+          <div class="empty-cart">
+            <div style="font-size: 4rem; margin-bottom: 1rem;">🛒</div>
+            <h3 style="color: var(--text-light);">Your cart is empty</h3>
+            <p>Add some products to get started!</p>
+          </div>
+        `;
+      } else {
+        cartItems.innerHTML = cart.map(item => `
+          <div class="cart-item">
+            <div class="cart-item-image">${item.icon}</div>
+            <div class="cart-item-info">
+              <div class="cart-item-title">${item.title}</div>
+              <div class="cart-item-course">${item.emoji} ${item.course}</div>
+              <div class="qty-controls">
+                <button class="qty-btn" onclick="updateQuantity(${item.id}, -1)">−</button>
+                <span style="padding: 0 0.5rem; font-weight: 600;">${item.quantity}</span>
+                <button class="qty-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+                <button class="qty-btn" onclick="removeFromCart(${item.id})" style="margin-left: 0.5rem; color: var(--accent-dark);">×</button>
+              </div>
+              <div style="margin-top: 0.5rem; font-weight: 700; color: var(--primary);">
+                ₹${(item.price * item.quantity).toLocaleString()}
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+
+    function toggleCart() {
+      document.getElementById('cartSidebar').classList.toggle('active');
+    }
+
+    function checkout() {
+      if (cart.length === 0) {
+        showToast('Your cart is empty!');
+        return;
+      }
+      
+      const uniqueCourses = new Set(cart.map(item => item.course));
+      const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      
+      const modal = document.getElementById('modal');
+      modal.innerHTML = `
+        <div class="modal-header">
+          <h2>🎉 Order Confirmation</h2>
+          <button class="modal-close" onclick="closeModalDirect()">×</button>
+        </div>
+        <div class="modal-body">
+          <div style="text-align: center; margin-bottom: 2rem;">
+            <div style="font-size: 5rem; margin-bottom: 1rem;">✅</div>
+            <h3 style="color: var(--primary); margin-bottom: 0.5rem;">Order Placed Successfully!</h3>
+            <p style="color: var(--text-light);">Total: ₹${totalPrice.toLocaleString()}</p>
+          </div>
+          
+          <div class="course-highlight">
+            <h3>🎓 ${uniqueCourses.size} Free Course${uniqueCourses.size !== 1 ? 's' : ''} Unlocked!</h3>
+            <div style="margin-top: 1rem;">
+              ${Array.from(uniqueCourses).map(course => `
+                <div style="padding: 0.5rem 0; color: #2d3436;">✓ ${course}</div>
+              `).join('')}
+            </div>
+            <p style="margin-top: 1rem;">Check your email for course access links!</p>
+          </div>
+          
+          <div style="margin-top: 2rem; padding: 1.5rem; background: #f8f9fa; border-radius: 10px;">
+            <h4 style="color: var(--primary); margin-bottom: 0.8rem;">📦 Delivery Details</h4>
+            <p style="margin-bottom: 0.3rem;">Expected delivery: 3-5 business days</p>
+            <p style="margin-bottom: 0.3rem;">Tracking ID: SKS${Date.now()}</p>
+            <p>You'll receive tracking info via email</p>
+          </div>
+          
+          <div style="text-align: center; margin-top: 2rem;">
+            <button class="btn btn-primary" onclick="completeCheckout()">Continue Shopping</button>
+          </div>
+        </div>
+      `;
+      
+      document.getElementById('modalOverlay').classList.add('active');
+    }
+
+    function completeCheckout() {
+      cart = [];
+      updateCart();
+      closeModalDirect();
+      toggleCart();
+      scrollToSection('products');
+      showToast('Thank you for your order! 🎉');
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('active');
+      
+      setTimeout(() => {
+        toast.classList.remove('active');
+      }, 3000);
+    }
+
+    window.onclick = function(event) {
+      const cartSidebar = document.getElementById('cartSidebar');
+      if (!cartSidebar.contains(event.target) && 
+          !event.target.closest('.cart-btn') && 
+          cartSidebar.classList.contains('active')) {
+        toggleCart();
+      }
+    }
+  </script>
+</body>
+</html>

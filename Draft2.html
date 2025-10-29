@@ -1,0 +1,2140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Skill Shack — Buy Products, Unlock Skills</title>
+  <meta name="description" content="Every product includes a free learning course. Shop smart and unlock your potential." />
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --primary-light: #818cf8;
+      --accent: #ec4899;
+      --accent-dark: #db2777;
+      --accent-light: #f472b6;
+      --bg: #fefefe;
+      --bg-alt: #faf5ff;
+      --text: #1e1b4b;
+      --text-light: #6b7280;
+      --card-bg: #ffffff;
+      --shadow: 0 10px 40px rgba(99, 102, 241, 0.15);
+      --shadow-hover: 0 15px 50px rgba(99, 102, 241, 0.25);
+      --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      --gradient-course: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+    }
+
+    body {
+      font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 50%, #fae8ff 100%);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Navbar */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 2px 20px rgba(99, 102, 241, 0.1);
+      z-index: 1000;
+      transition: all 0.3s ease;
+      border-bottom: 2px solid rgba(99, 102, 241, 0.1);
+    }
+
+    .nav-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.5rem;
+      font-weight: 800;
+      background: var(--gradient-1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      font-size: 2rem;
+      filter: drop-shadow(0 2px 4px rgba(99, 102, 241, 0.3));
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 600;
+      transition: all 0.3s ease;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background: var(--gradient-1);
+      transition: width 0.3s ease;
+      border-radius: 2px;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .cart-btn {
+      background: var(--gradient-1);
+      color: white;
+      padding: 0.7rem 1.8rem;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+    }
+
+    .cart-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(99, 102, 241, 0.5);
+    }
+
+    /* Hero Section */
+    .hero {
+      margin-top: 80px;
+      padding: 5rem 2rem;
+      background: var(--gradient-1);
+      color: white;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+      animation: rotate 25s linear infinite;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -10%;
+      left: -10%;
+      width: 120%;
+      height: 120%;
+      background: radial-gradient(circle, rgba(236, 72, 153, 0.2) 0%, transparent 60%);
+      animation: rotate 30s linear infinite reverse;
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .hero-content {
+      max-width: 900px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h1 {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      animation: fadeInUp 0.8s ease;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      text-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .hero p {
+      font-size: 1.4rem;
+      margin-bottom: 2rem;
+      opacity: 0.95;
+      animation: fadeInUp 0.8s ease 0.2s backwards;
+      font-weight: 500;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.25);
+      backdrop-filter: blur(15px);
+      padding: 0.9rem 2rem;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      animation: fadeInUp 0.8s ease 0.4s backwards;
+      border: 2px solid rgba(255,255,255,0.3);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      animation: fadeInUp 0.8s ease 0.6s backwards;
+    }
+
+    .btn {
+      padding: 1.1rem 2.5rem;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background: white;
+      color: var(--primary);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: white;
+      border: 3px solid white;
+    }
+
+    .btn-secondary:hover {
+      background: white;
+      color: var(--primary);
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Search Bar */
+    .search-section {
+      max-width: 1400px;
+      margin: -3rem auto 3rem;
+      padding: 0 2rem;
+      position: relative;
+      z-index: 10;
+    }
+
+    .search-bar {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 25px;
+      box-shadow: 0 10px 40px rgba(99, 102, 241, 0.2);
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+      border: 2px solid rgba(99, 102, 241, 0.1);
+    }
+
+    .search-input {
+      flex: 1;
+      min-width: 250px;
+      padding: 1rem 1.5rem;
+      border: 2px solid #e9ecef;
+      border-radius: 50px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+    }
+
+    .filter-select {
+      padding: 1rem 1.8rem;
+      border: 2px solid #e9ecef;
+      border-radius: 50px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      background: white;
+    }
+
+    .filter-select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+    }
+
+    /* Products Section */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .section-header h2 {
+      font-size: 3rem;
+      background: var(--gradient-1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+      font-weight: 900;
+    }
+
+    .section-header p {
+      font-size: 1.2rem;
+      color: var(--text-light);
+      font-weight: 500;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .product-card {
+      background: white;
+      border-radius: 25px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: all 0.4s ease;
+      cursor: pointer;
+      animation: fadeIn 0.6s ease;
+      border: 2px solid rgba(99, 102, 241, 0.1);
+    }
+
+    .product-card:hover {
+      transform: translateY(-12px);
+      box-shadow: var(--shadow-hover);
+      border-color: var(--primary);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .product-image {
+      width: 100%;
+      height: 250px;
+      background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 8rem;
+      transition: transform 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .product-image::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at center, rgba(99, 102, 241, 0.05) 30%, transparent 100%);
+    }
+
+    .product-card:hover .product-image {
+      transform: scale(1.08);
+    }
+
+    .product-info {
+      padding: 1.5rem;
+    }
+
+    .product-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 0.8rem;
+      line-height: 1.3;
+    }
+
+    .product-desc {
+      color: var(--text);
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+      line-height: 1.6;
+      font-weight: 500;
+    }
+
+    .product-highlights {
+      background: var(--bg-alt);
+      padding: 1rem;
+      border-radius: 15px;
+      margin-bottom: 1rem;
+      font-size: 0.85rem;
+      border: 1px solid rgba(99, 102, 241, 0.1);
+    }
+
+    .product-highlights ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+
+    .product-highlights li {
+      padding: 0.25rem 0;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .product-highlights li::before {
+      content: '✨ ';
+      color: var(--primary);
+      font-weight: bold;
+      margin-right: 0.5rem;
+    }
+
+    .course-badge {
+      background: var(--gradient-course);
+      color: #b45309;
+      padding: 0.7rem 1.2rem;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-bottom: 1rem;
+      border: 2px solid rgba(180, 83, 9, 0.2);
+      box-shadow: 0 4px 12px rgba(252, 182, 159, 0.3);
+    }
+
+    .product-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 2px solid rgba(99, 102, 241, 0.1);
+    }
+
+    .product-price {
+      font-size: 1.6rem;
+      font-weight: 900;
+      background: var(--gradient-1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .add-to-cart {
+      background: var(--gradient-1);
+      color: white;
+      padding: 0.8rem 1.8rem;
+      border: none;
+      border-radius: 50px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+    }
+
+    .add-to-cart:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+    }
+
+    /* About Section */
+    .about-section {
+      background: white;
+      padding: 5rem 2rem;
+      margin-top: 3rem;
+      border-top: 3px solid rgba(99, 102, 241, 0.1);
+      border-bottom: 3px solid rgba(99, 102, 241, 0.1);
+    }
+
+    .about-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .about-content h2 {
+      font-size: 3rem;
+      background: var(--gradient-1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1.5rem;
+      font-weight: 900;
+    }
+
+    .about-content p {
+      font-size: 1.15rem;
+      color: var(--text-light);
+      margin-bottom: 1.5rem;
+      line-height: 1.8;
+      font-weight: 500;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .feature-card {
+      background: var(--bg-alt);
+      padding: 2.5rem;
+      border-radius: 20px;
+      text-align: center;
+      transition: all 0.3s ease;
+      border: 2px solid rgba(99, 102, 241, 0.1);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 40px rgba(99, 102, 241, 0.2);
+      border-color: var(--primary);
+    }
+
+    .feature-icon {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      filter: drop-shadow(0 4px 8px rgba(99, 102, 241, 0.2));
+    }
+
+    .feature-card h3 {
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+      font-weight: 800;
+      font-size: 1.3rem;
+    }
+
+    .feature-card p {
+      font-weight: 500;
+    }
+
+    /* Contact Section */
+    .contact-section {
+      background: var(--gradient-1);
+      color: white;
+      padding: 5rem 2rem;
+    }
+
+    .contact-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .contact-content h2 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      text-align: center;
+      font-weight: 900;
+      text-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .contact-card {
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(15px);
+      padding: 2.5rem;
+      border-radius: 20px;
+      text-align: center;
+      border: 2px solid rgba(255,255,255,0.2);
+      transition: all 0.3s ease;
+    }
+
+    .contact-card:hover {
+      background: rgba(255,255,255,0.25);
+      transform: translateY(-5px);
+    }
+
+    .contact-card h3 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .contact-card h4 {
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+
+    /* Footer */
+    footer {
+      background: #1e1b4b;
+      color: white;
+      padding: 3rem 2rem 1rem;
+    }
+
+    .footer-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer-section h3 {
+      margin-bottom: 1rem;
+      color: var(--primary-light);
+      font-weight: 800;
+    }
+
+    .footer-section ul {
+      list-style: none;
+    }
+
+    .footer-section ul li {
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-section a {
+      color: #ccc;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .footer-section a:hover {
+      color: var(--primary-light);
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 2rem;
+      border-top: 1px solid #444;
+      color: #999;
+    }
+
+    /* Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(30, 27, 75, 0.7);
+      backdrop-filter: blur(8px);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal {
+      background: white;
+      border-radius: 30px;
+      max-width: 900px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 25px 70px rgba(99, 102, 241, 0.4);
+      animation: slideUp 0.4s ease;
+      border: 3px solid rgba(99, 102, 241, 0.2);
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal-header {
+      padding: 2rem;
+      border-bottom: 3px solid rgba(99, 102, 241, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-alt);
+    }
+
+    .modal-header h2 {
+      font-weight: 900;
+      color: var(--primary);
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 2rem;
+      cursor: pointer;
+      color: var(--text-light);
+      transition: all 0.3s ease;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+
+    .modal-close:hover {
+      color: var(--accent);
+      transform: rotate(90deg);
+      background: rgba(236, 72, 153, 0.1);
+    }
+
+    .modal-body {
+      padding: 2rem;
+    }
+
+    .modal-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .modal-image {
+      width: 100%;
+      height: 300px;
+      background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 8rem;
+      position: relative;
+      overflow: hidden;
+      border: 2px solid rgba(99, 102, 241, 0.1);
+    }
+
+    .modal-image::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at center, rgba(99, 102, 241, 0.08) 30%, transparent 100%);
+    }
+
+    .course-highlight {
+      background: var(--gradient-course);
+      padding: 1.8rem;
+      border-radius: 20px;
+      margin-top: 1rem;
+      border: 2px solid rgba(180, 83, 9, 0.2);
+      box-shadow: 0 8px 20px rgba(252, 182, 159, 0.3);
+    }
+
+    .course-highlight h3 {
+      color: #b45309;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 800;
+    }
+
+    .course-highlight h4 {
+      color: #78350f;
+      font-weight: 700;
+    }
+
+    .course-highlight p {
+      color: #78350f;
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    /* Cart Sidebar */
+    .cart-sidebar {
+      position: fixed;
+      right: -400px;
+      top: 0;
+      width: 400px;
+      height: 100vh;
+      background: white;
+      box-shadow: -5px 0 30px rgba(99, 102, 241, 0.3);
+      z-index: 3000;
+      transition: right 0.4s ease;
+      display: flex;
+      flex-direction: column;
+      border-left: 3px solid var(--primary);
+    }
+
+    .cart-sidebar.active {
+      right: 0;
+    }
+
+    .cart-header {
+      padding: 2rem;
+      border-bottom: 3px solid rgba(99, 102, 241, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-alt);
+    }
+
+    .cart-header h2 {
+      font-weight: 900;
+      color: var(--primary);
+    }
+
+    .cart-items {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.5rem;
+    }
+
+    .cart-item {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 2px solid rgba(99, 102, 241, 0.1);
+    }
+
+    .cart-item-image {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      flex-shrink: 0;
+      border: 2px solid rgba(99, 102, 241, 0.1);
+    }
+
+    .cart-item-info {
+      flex: 1;
+    }
+
+    .cart-item-title {
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+      font-size: 0.95rem;
+      color: var(--text);
+    }
+
+    .cart-item-course {
+      font-size: 0.8rem;
+      color: #b45309;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .qty-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .qty-btn {
+      width: 32px;
+      height: 32px;
+      border: 2px solid var(--primary);
+      background: white;
+      border-radius: 50%;
+      cursor: pointer;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      color: var(--primary);
+    }
+
+    .qty-btn:hover {
+      background: var(--primary);
+      color: white;
+      transform: scale(1.1);
+    }
+
+    .cart-footer {
+      padding: 2rem;
+      border-top: 3px solid rgba(99, 102, 241, 0.1);
+      background: var(--bg-alt);
+    }
+
+    .cart-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: var(--text);
+    }
+
+    .courses-unlocked {
+      background: var(--gradient-course);
+      padding: 1.2rem;
+      border-radius: 15px;
+      margin-bottom: 1rem;
+      text-align: center;
+      font-weight: 700;
+      color: #b45309;
+      border: 2px solid rgba(180, 83, 9, 0.2);
+      box-shadow: 0 4px 12px rgba(252, 182, 159, 0.3);
+    }
+
+    .checkout-btn {
+      width: 100%;
+      padding: 1.2rem;
+      background: var(--gradient-1);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+    }
+
+    .checkout-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(99, 102, 241, 0.5);
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--gradient-1);
+      color: white;
+      padding: 1.2rem 2rem;
+      border-radius: 50px;
+      box-shadow: 0 8px 30px rgba(99, 102, 241, 0.4);
+      z-index: 4000;
+      animation: slideInRight 0.4s ease;
+      display: none;
+      font-weight: 700;
+      border: 2px solid rgba(255,255,255,0.3);
+    }
+
+    .toast.active {
+      display: block;
+    }
+
+    @keyframes slideInRight {
+      from {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .hero p {
+        font-size: 1.1rem;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .modal-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cart-sidebar {
+        width: 100%;
+        right: -100%;
+      }
+
+      .products-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cta-buttons {
+        flex-direction: column;
+      }
+    }
+
+    .empty-cart {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--text-light);
+    }
+
+    .rating {
+      color: #f59e0b;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .stock-info {
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .prime-badge {
+      background: var(--gradient-2);
+      color: white;
+      padding: 0.4rem 0.8rem;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      display: inline-block;
+      margin-bottom: 0.5rem;
+      box-shadow: 0 4px 12px rgba(236, 72, 153, 0.3);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-container">
+      <a href="#" class="logo" onclick="scrollToSection('home'); return false;">
+        <span class="logo-icon">🎯</span>
+        <span>Skill Shack</span>
+      </a>
+      <ul class="nav-links">
+        <li><a onclick="scrollToSection('home')">Home</a></li>
+        <li><a onclick="scrollToSection('products')">Products</a></li>
+        <li><a onclick="showAllCourses()">Courses</a></li>
+        <li><a onclick="scrollToSection('about')">About</a></li>
+        <li><a onclick="scrollToSection('contact')">Contact</a></li>
+      </ul>
+      <button class="cart-btn" onclick="toggleCart()">
+        <span>🛒</span>
+        <span>Cart (<span id="cartCount">0</span>)</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <div class="hero-badge">🎓 Every Purchase Unlocks Skills</div>
+      <h1>Buy Products, Unlock Skills</h1>
+      <p>Transform your shopping into learning! Every product comes with a premium course absolutely free. Build your skills while building your collection.</p>
+      <div class="cta-buttons">
+        <button class="btn btn-primary" onclick="scrollToSection('products')">Explore Products</button>
+        <button class="btn btn-secondary" onclick="showAllCourses()">View All Courses</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Search Bar -->
+  <div class="search-section">
+    <div class="search-bar">
+      <input type="text" class="search-input" id="searchInput" placeholder="Search for products or courses..." oninput="filterProducts()">
+      <select class="filter-select" id="categoryFilter" onchange="filterProducts()">
+        <option value="">All Categories</option>
+        <option value="photography">Photography</option>
+        <option value="art">Art & Crafts</option>
+        <option value="fitness">Fitness & Wellness</option>
+        <option value="gardening">Gardening</option>
+        <option value="cooking">Cooking</option>
+        <option value="lifestyle">Lifestyle</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Products Section -->
+  <section class="container" id="products">
+    <div class="section-header">
+      <h2>Featured Products</h2>
+      <p>Each product comes with a professionally designed free learning course</p>
+    </div>
+    <div class="products-grid" id="productsGrid"></div>
+  </section>
+
+  <!-- About Section -->
+  <section class="about-section" id="about">
+    <div class="about-content">
+      <h2>About Skill Shack</h2>
+      <p>Skill Shack is revolutionizing online shopping by combining quality products with free educational courses. We believe that every purchase should be an investment in yourself.</p>
+      <p>Our mission is to make learning accessible to everyone. When you buy a camera, you shouldn't just get hardware—you should unlock the knowledge to use it masterfully. When you purchase yoga equipment, you deserve expert guidance to practice safely and effectively.</p>
+      
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🎓</div>
+          <h3>Free Courses</h3>
+          <p>Every product includes a comprehensive learning course designed by industry experts</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3>Instant Access</h3>
+          <p>Get immediate access to your courses within 5 minutes of purchase</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">✨</div>
+          <h3>Quality Guaranteed</h3>
+          <p>All products are tested and verified to meet our high quality standards</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📦</div>
+          <h3>Fast Delivery</h3>
+          <p>Quick and reliable shipping with eco-friendly packaging materials</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="contact-section" id="contact">
+    <div class="contact-content">
+      <h2>Get In Touch</h2>
+      <p style="text-align: center; margin-bottom: 2rem; font-size: 1.1rem;">Have questions? We're here to help!</p>
+      
+      <div class="contact-grid">
+        <div class="contact-card">
+          <h3>📍</h3>
+          <h4>Visit Us</h4>
+          <p>Hyderabad, Telangana</p>
+          <p>India</p>
+        </div>
+        <div class="contact-card">
+          <h3>📧</h3>
+          <h4>Email Us</h4>
+          <p>support@skillshack.com</p>
+          <p>info@skillshack.com</p>
+        </div>
+        <div class="contact-card">
+          <h3>📞</h3>
+          <h4>Call Us</h4>
+          <p>+91 1800-123-4567</p>
+          <p>Mon-Sat: 9AM - 6PM IST</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>🎯 Skill Shack</h3>
+        <p>Buy Products, Unlock Skills.</p>
+        <p style="margin-top: 1rem; color: #888;">Making education accessible through every purchase.</p>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a onclick="scrollToSection('home')">Home</a></li>
+          <li><a onclick="scrollToSection('products')">Products</a></li>
+          <li><a onclick="showAllCourses()">Free Courses</a></li>
+          <li><a onclick="scrollToSection('about')">About Us</a></li>
+          <li><a onclick="scrollToSection('contact')">Contact</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Customer Service</h3>
+        <ul>
+          <li><a onclick="showModal('faq')">FAQ</a></li>
+          <li><a onclick="showModal('shipping')">Shipping Info</a></li>
+          <li><a onclick="showModal('returns')">Returns & Refunds</a></li>
+          <li><a onclick="showModal('privacy')">Privacy Policy</a></li>
+          <li><a onclick="showModal('terms')">Terms & Conditions</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Categories</h3>
+        <ul>
+          <li><a onclick="filterByCategory('photography')">Photography</a></li>
+          <li><a onclick="filterByCategory('art')">Art & Crafts</a></li>
+          <li><a onclick="filterByCategory('fitness')">Fitness & Wellness</a></li>
+          <li><a onclick="filterByCategory('gardening')">Gardening</a></li>
+          <li><a onclick="filterByCategory('cooking')">Cooking</a></li>
+          <li><a onclick="filterByCategory('lifestyle')">Lifestyle</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>&copy; 2025 Skill Shack. All rights reserved. | Designed with 💜 for learners everywhere.</p>
+    </div>
+  </footer>
+
+  <!-- Cart Sidebar -->
+  <div class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+      <h2>Your Cart</h2>
+      <button class="modal-close" onclick="toggleCart()">×</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-footer">
+      <div class="courses-unlocked" id="coursesInfo">
+        🎓 0 Free Courses Unlocked
+      </div>
+      <div class="cart-total">
+        <span>Total:</span>
+        <span id="cartTotal">₹0</span>
+      </div>
+      <button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+    <div class="modal" id="modal" onclick="event.stopPropagation()"></div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const PRODUCTS = [
+      {
+        id: 1,
+        title: 'Professional DSLR Camera Bundle Kit with 18-55mm Lens',
+        price: 25000,
+        category: 'photography',
+        icon: '📷',
+        description: '24.2MP APS-C CMOS Sensor | Full HD Video | Built-in WiFi & NFC',
+        amazonDesc: 'Capture stunning photos and videos with this professional DSLR camera bundle. Perfect for beginners and enthusiasts, this kit includes everything you need to start your photography journey. The 24.2 megapixel APS-C CMOS sensor delivers incredible image quality with rich colors and fine detail. Built-in WiFi and NFC connectivity let you instantly share your photos to social media. The included 18-55mm versatile zoom lens covers wide-angle to portrait focal lengths. Complete with camera bag, 32GB memory card, and professional cleaning kit.',
+        highlights: [
+          '24.2 Megapixel APS-C CMOS sensor for exceptional image quality',
+          'Full HD 1080p video recording at 30fps',
+          'Built-in WiFi and NFC for easy photo sharing',
+          '18-55mm IS STM lens with image stabilization',
+          '3-inch vari-angle touchscreen LCD',
+          'ISO 100-6400 (expandable to 25600) for low-light shooting'
+        ],
+        course: 'Photography Masterclass - Beginner to Pro',
+        courseDesc: 'Master professional photography with this comprehensive 50-hour course taught by award-winning photographers. Learn camera settings, composition rules, lighting techniques, portrait photography, landscape photography, product photography, and advanced editing with Lightroom and Photoshop. Includes lifetime access, 200+ video lessons, hands-on projects, and certification upon completion.',
+        emoji: '📸',
+        rating: 4.8,
+        reviews: 2847,
+        inStock: true
+      },
+      {
+        id: 2,
+        title: 'Premium Artist Acrylic Painting Set - 52 Piece Professional Kit',
+        price: 1200,
+        category: 'art',
+        icon: '🎨',
+        description: '24 Acrylic Colors | 12 Pro Brushes | 2 Canvases | Wooden Palette & Easel',
+        amazonDesc: 'Unleash your inner artist with this complete 52-piece professional painting kit. Perfect for beginners, students, and experienced artists alike. This comprehensive set includes 24 vibrant acrylic paint tubes (12ml each) in a full spectrum of colors, 12 professional-grade artist brushes in various sizes and shapes, 2 pre-stretched canvas boards (16x20 inches), wooden mixing palette, 3 palette knives for texture effects, portable tabletop easel, and premium carrying case. All paints are non-toxic, highly pigmented, and quick-drying. The brushes feature synthetic bristles that maintain their shape and are easy to clean.',
+        highlights: [
+          '24 rich, vibrant acrylic paint colors (12ml tubes)',
+          '12 professional artist brushes - various sizes and shapes',
+          '2 pre-stretched, primed canvas boards (16x20")',
+          'Wooden mixing palette with thumb hole',
+          '3 stainless steel palette knives',
+          'Portable tabletop easel and premium storage case'
+        ],
+        course: 'Complete Art & Painting Workshop',
+        courseDesc: 'Transform from beginner to confident artist with this 40-hour comprehensive painting course. Master color theory, brush techniques, composition, perspective drawing, acrylic painting methods, oil painting basics, watercolor techniques, and portfolio development. Learn from professional gallery artists. Includes 150+ video lessons, downloadable resources, practice exercises, and certificate of completion.',
+        emoji: '🎨',
+        rating: 4.7,
+        reviews: 1523,
+        inStock: true
+      },
+      {
+        id: 3,
+        title: 'Premium Eco Yoga Mat Set - 6mm with Blocks, Strap & Bag',
+        price: 900,
+        category: 'fitness',
+        icon: '🧘',
+        description: 'Natural Rubber | Non-Slip Surface | Extra Large 72"x24" | Complete Accessories',
+        amazonDesc: 'Experience superior comfort and stability with this eco-friendly yoga mat set. Made from 100% natural rubber and thermoplastic elastomer (TPE), this mat is both environmentally friendly and incredibly durable. The 6mm thickness provides optimal cushioning for joints while maintaining stability for balance poses. Features a unique non-slip textured surface that grips better as you sweat, perfect for hot yoga, vinyasa, and power yoga. Extra-large dimensions (72" x 24") accommodate all body types. Complete set includes premium carrying bag with adjustable shoulder strap, 2 high-density foam yoga blocks, resistance band for flexibility training, and ultra-absorbent microfiber towel.',
+        highlights: [
+          '6mm thick natural rubber - eco-friendly & biodegradable',
+          'Non-slip textured surface with excellent grip',
+          'Extra large size: 72" x 24" x 6mm',
+          'Includes carrying bag with adjustable strap',
+          '2 yoga blocks and resistance band included',
+          'Free from PVC, latex, and harmful chemicals'
+        ],
+        course: 'Complete Fitness & Yoga Transformation Program',
+        courseDesc: 'Transform your body and mind with this comprehensive 60-hour yoga and fitness program. Covers beginner to advanced asanas, pranayama breathing techniques, meditation practices, flexibility training, strength building, injury prevention, and holistic wellness. Includes personalized workout plans, nutrition guidance, stress management techniques, and lifetime access to 200+ video lessons. Led by certified yoga instructors with 15+ years experience.',
+        emoji: '🧘',
+        rating: 4.9,
+        reviews: 3156,
+        inStock: true
+      },
+      {
+        id: 4,
+        title: 'Professional Gardening Tools Set - 10 Piece Stainless Steel Kit',
+        price: 1800,
+        category: 'gardening',
+        icon: '🌱',
+        description: 'Rust-Resistant Steel | Ergonomic Handles | Heavy-Duty Gloves | Storage Bag',
+        amazonDesc: 'Transform your garden with this premium 10-piece professional gardening toolkit. Each tool is crafted from high-quality stainless steel that resists rust and bends, ensuring years of reliable use. Ergonomic soft-grip handles reduce hand fatigue during extended gardening sessions. This complete set includes hand trowel for planting, transplanter for seedlings, hand cultivator for soil preparation, sharp bypass pruning shears, garden fork for weeding, V-shaped weeder, heavy-duty gardening gloves (one size fits most), comfortable knee pad with extra cushioning, and durable 600D oxford fabric storage bag with multiple pockets.',
+        highlights: [
+          'Premium stainless steel tools - rust-resistant & durable',
+          'Ergonomic soft-grip handles for comfort',
+          'Sharp bypass pruning shears with safety lock',
+          'Heavy-duty gardening gloves - puncture resistant',
+          'Extra-thick knee pad for comfortable gardening',
+          'Premium storage organizer bag with shoulder strap'
+        ],
+        course: 'Gardening 101 - Complete Year-Round Guide',
+        courseDesc: 'Learn to create and maintain a thriving garden with this 35-hour comprehensive course. Master soil preparation, composting, seed starting, organic pest control, seasonal planting guides, vegetable gardening, herb cultivation, flower care, and sustainable gardening practices. Perfect for beginners and intermediate gardeners. Includes garden planning templates, planting calendars, troubleshooting guides, and expert tips from master gardeners.',
+        emoji: '🌱',
+        rating: 4.6,
+        reviews: 892,
+        inStock: true
+      },
+      {
+        id: 5,
+        title: 'Complete Woodworking Hand Tools Set - 25 Piece Professional Kit',
+        price: 2500,
+        category: 'lifestyle',
+        icon: '🪵',
+        description: 'Carbon Steel Tools | Precision Measuring | Safety Equipment | Heavy-Duty Bag',
+        amazonDesc: 'Build beautiful furniture and crafts with this comprehensive 25-piece professional woodworking toolkit. Each tool is manufactured to exacting standards using premium materials for accuracy and longevity. The set includes 20-inch hand saw with aggressive tooth pattern, 16oz claw hammer with shock-absorbing handle, 25-foot measuring tape with magnetic hook, 5-piece wood chisel set (6mm to 25mm) with protective caps, 9-piece precision screwdriver set, 9-inch torpedo level, try square for 90-degree angles, needle-nose pliers, wire cutters, safety goggles with UV protection, and heavy-duty 16-pocket canvas tool bag.',
+        highlights: [
+          '25 essential woodworking tools in one complete set',
+          'Premium carbon steel construction for durability',
+          '5-piece chisel set with sharpened edges',
+          'Precision measuring and marking tools included',
+          'Safety equipment: goggles and work gloves',
+          'Heavy-duty canvas tool bag with 16 pockets'
+        ],
+        course: 'Woodcraft Basics - Furniture Making Mastery',
+        courseDesc: 'Master the art of woodworking from beginner to advanced projects with this 45-hour comprehensive course. Learn wood selection, tool usage and maintenance, joinery techniques (mortise, tenon, dovetails), furniture design principles, finishing methods, safety practices, and project planning. Build tables, chairs, cabinets, and more with expert step-by-step guidance. Includes blueprints for 20+ projects, wood species guide, and certification.',
+        emoji: '🪵',
+        rating: 4.7,
+        reviews: 647,
+        inStock: true
+      },
+      {
+        id: 6,
+        title: 'Insulated Stainless Steel Water Bottle - 1 Liter Vacuum Sealed',
+        price: 600,
+        category: 'lifestyle',
+        icon: '💧',
+        description: 'Keeps Cold 24hrs | Keeps Hot 12hrs | Leak-Proof | BPA-Free | Eco-Friendly',
+        amazonDesc: 'Stay hydrated in style with this premium vacuum-insulated water bottle. Made from 18/8 food-grade stainless steel that is rust-proof and unbreakable. Double-wall vacuum insulation technology keeps your cold drinks icy for 24 hours and hot beverages steaming for 12 hours without any condensation on the outside. The wide mouth opening (2 inches) makes it easy to add ice cubes and clean thoroughly. Features a 100% leak-proof sport cap with convenient carry loop. Powder-coated finish provides excellent grip and comes in multiple stylish colors. Perfect for gym, office, travel, hiking, and daily use. BPA-free and eco-friendly alternative to single-use plastic bottles.',
+        highlights: [
+          '1 Liter (32oz) capacity - perfect size for daily hydration',
+          'Double-wall vacuum insulation technology',
+          'Keeps beverages cold for 24 hours, hot for 12 hours',
+          'Leak-proof sport cap with convenient carry loop',
+          'BPA-free, eco-friendly, and dishwasher safe (hand wash recommended)',
+          'Fits most car cup holders and backpack pockets'
+        ],
+        course: 'Sustainable Living Complete Guide',
+        courseDesc: 'Learn practical strategies to reduce waste and live more sustainably with this 30-hour comprehensive course. Topics include zero-waste lifestyle tips, eco-friendly product alternatives, energy conservation methods, water saving techniques, sustainable food choices, composting at home, reducing your carbon footprint, and inspiring others to go green. Includes action plans, eco-living checklists, and community support. Make a real impact on the planet one choice at a time.',
+        emoji: '🌍',
+        rating: 4.8,
+        reviews: 4523,
+        inStock: true
+      },
+      {
+        id: 7,
+        title: 'Premium Non-Stick Cookware Set - 12 Piece Induction Compatible',
+        price: 1700,
+        category: 'cooking',
+        icon: '🍳',
+        description: 'Ceramic Coating | Dishwasher Safe | Oven Safe 450°F | Includes Utensils',
+        amazonDesc: 'Cook like a professional chef with this complete 12-piece non-stick cookware set built to last. Features revolutionary ceramic non-stick coating that requires minimal oil for healthier cooking and makes cleanup effortless. Constructed from heavy-gauge aluminum that distributes heat evenly, eliminating hot spots. Set includes 8-inch frying pan, 10-inch frying pan, 12-inch frying pan with lid, 1.5-quart saucepan with lid, 2.5-quart saucepan with lid, 6-quart stockpot with lid, and 4 heat-resistant nylon cooking utensils (spatula, slotted turner, serving spoon, pasta fork). Oven-safe up to 450°F. Compatible with all stovetops including gas, electric, and induction.',
+        highlights: [
+          '12-piece complete cookware set for all cooking needs',
+          'Ceramic non-stick coating - PFOA and PTFE free',
+          'Compatible with all stovetops including induction',
+          'Oven safe up to 450°F for versatile cooking',
+          'Includes 4 heat-resistant nylon cooking utensils',
+          'Dishwasher safe for easy cleanup (hand wash recommended)'
+        ],
+        course: 'Home Cooking Masterclass - Beginner to Gourmet',
+        courseDesc: 'Transform your cooking skills from basic to gourmet with this 55-hour comprehensive culinary course. Learn essential knife skills, cooking techniques (sauté, roast, braise, steam), recipe development, meal planning, international cuisines (Italian, French, Asian, Mexican), baking basics, food presentation, kitchen organization, and food safety. Includes 100+ tested recipes from appetizers to desserts, cooking timers, measurement conversions, and lifetime access. Taught by professional chefs.',
+        emoji: '👨‍🍳',
+        rating: 4.9,
+        reviews: 2134,
+        inStock: true
+      },
+      {
+        id: 8,
+        title: 'Modern Home Décor Collection - 8 Piece Coordinated Set',
+        price: 2200,
+        category: 'lifestyle',
+        icon: '🏠',
+        description: 'Ceramic Vases | Photo Frames | Decorative Bowl | Minimalist Design',
+        amazonDesc: 'Elevate your living space with this thoughtfully curated 8-piece modern home décor collection. Each piece is carefully selected to complement the others, creating a cohesive, sophisticated look in any room. The set includes 3 geometric ceramic vases in varying sizes (small, medium, large) perfect for fresh or artificial flowers, 3 elegant photo frames (5x7", 4x6", 8x10") made from premium wood with glass fronts, realistic artificial succulent arrangement in decorative pot that requires no maintenance, and sculptural ceramic decorative bowl for keys, jewelry, or display. Features a modern minimalist design in neutral tones (white, beige, light grey) that complements contemporary, Scandinavian, and transitional interior styles.',
+        highlights: [
+          '8-piece coordinated home décor set',
+          'Modern minimalist design with clean lines',
+          'Premium ceramic and natural wood materials',
+          'Neutral color palette matches any interior',
+          'Includes wall art frames and table décor',
+          'Ready to display - no assembly required'
+        ],
+        course: 'Interior Design Fundamentals - Transform Any Space',
+        courseDesc: 'Learn professional interior design principles with this 40-hour comprehensive course. Master color theory, space planning, furniture arrangement, lighting design, texture and pattern mixing, budget decorating strategies, and room-by-room design guides (living room, bedroom, kitchen, bathroom, office). Create beautiful, functional spaces with confidence. Includes design templates, mood board creation, shopping guides, before/after case studies, and access to designer resource library.',
+        emoji: '🏡',
+        rating: 4.6,
+        reviews: 1067,
+        inStock: true
+      },
+      {
+        id: 9,
+        title: 'Ultimate DIY Craft Supplies Box - 100+ Premium Items',
+        price: 950,
+        category: 'art',
+        icon: '✂️',
+        description: 'Colored Paper | Scissors | Glue | Ribbons | Buttons | Storage Organizer',
+        amazonDesc: 'Unleash your creative potential with this massive collection of over 100 premium craft supplies. Perfect for scrapbooking, card making, DIY projects, and endless creative endeavors. This ultimate crafting kit includes 50 sheets of colored construction paper (12x12"), 30 sheets of premium cardstock in assorted colors, precision crafting scissors with comfort grip, glue sticks (12 pack), liquid craft glue, double-sided tape, 20 spools of satin ribbons in various colors and widths, 200+ mixed buttons in assorted sizes and colors, 100 colorful pompoms, googly eyes variety pack, 50 pipe cleaners in assorted colors, decorative stickers (10 sheets), clear acrylic stamps set, 6 ink pads in rainbow colors, and multi-compartment storage organizer with handle.',
+        highlights: [
+          '100+ premium craft items in one complete set',
+          'Includes paper, cardstock, adhesives, and cutting tools',
+          'Perfect for all ages - kids, teens, and adults',
+          'Multi-compartment organized storage container',
+          'Eco-friendly, non-toxic materials',
+          'Ideal for scrapbooking, cards, and multiple project types'
+        ],
+        course: 'DIY Craft Workshop - From Hobby to Business',
+        courseDesc: 'Master various crafting techniques with this 38-hour comprehensive course. Learn paper crafts, card making, scrapbooking techniques, jewelry making, home décor DIY, gift wrapping artistry, upcycling and repurposing projects, craft photography, and even how to sell your crafts online through Etsy and social media. Perfect for hobbyists and aspiring craft entrepreneurs. Includes 150+ project tutorials, business planning templates, pricing guides, and marketing strategies.',
+        emoji: '✂️',
+        rating: 4.7,
+        reviews: 1845,
+        inStock: true
+      },
+      {
+        id: 10,
+        title: 'Organic Skincare & Beauty Set - 8 Full-Size Natural Products',
+        price: 1500,
+        category: 'lifestyle',
+        icon: '💆',
+        description: 'All Natural Ingredients | Cruelty-Free | Paraben-Free | Complete Routine',
+        amazonDesc: 'Nourish your skin naturally with this complete 8-piece organic skincare regimen. Every product is formulated with pure, natural ingredients and is completely free from parabens, sulfates, synthetic fragrances, and harmful chemicals. This luxurious collection includes gentle foaming facial cleanser (150ml) with aloe vera and chamomile, balancing toner (150ml) with rose water and witch hazel, vitamin C brightening serum (30ml), hydrating day cream with SPF 30 (50ml), nourishing night cream with retinol alternative (50ml), revitalizing eye cream (15ml) to reduce puffiness and dark circles, purifying clay face mask (100ml) with activated charcoal, and organic lip balm (15g) with shea butter. Suitable for all skin types including sensitive skin. Cruelty-free and vegan-friendly.',
+        highlights: [
+          '8 full-size organic skincare products',
+          '100% natural ingredients - cruelty-free',
+          'Suitable for all skin types including sensitive',
+          'Paraben-free, sulfate-free, fragrance-free',
+          'Complete morning and nighttime skincare routine',
+          'Eco-friendly recyclable packaging'
+        ],
+        course: 'Natural Beauty & Skincare Complete Course',
+        courseDesc: 'Achieve healthy, glowing skin naturally with this 35-hour comprehensive beauty course. Learn professional skincare routines for different skin types, ingredient knowledge and what to avoid, DIY beauty recipes, facial massage techniques, anti-aging strategies, natural makeup basics, hair care, and holistic wellness practices. Understand your skin type and create personalized routines. Includes skin analysis tools, product recommendation guides, DIY recipe book with 50+ formulas, and lifetime access.',
+        emoji: '💆',
+        rating: 4.8,
+        reviews: 2976,
+        inStock: true
+      },
+      {
+        id: 11,
+        title: 'Ergonomic Aluminum Laptop Stand - 7 Adjustable Heights',
+        price: 1000,
+        category: 'lifestyle',
+        icon: '💻',
+        description: '360° Rotation | Heat Dissipation | Cable Management | Phone Holder',
+        amazonDesc: 'Improve your posture, productivity, and comfort with this premium adjustable laptop stand. Crafted from high-quality aluminum alloy with a sleek, modern design that complements any workspace. Features 7 adjustable height settings (3 inches to 12 inches) to achieve the perfect ergonomic viewing angle, reducing neck and back strain during long work sessions. The open design promotes better airflow around your laptop, preventing overheating. 360-degree rotating base allows easy screen sharing in meetings. Anti-slip silicone pads protect your laptop from scratches and prevent sliding. Compatible with all laptops from 10" to 17" including MacBook, HP, Dell, Lenovo, and Surface. Includes integrated cable management clips and bonus smartphone holder.',
+        highlights: [
+          '7 adjustable height positions (3" to 12")',
+          'Premium aluminum alloy construction',
+          '360-degree rotating base for easy sharing',
+          'Fits all laptops 10" to 17"',
+          'Includes bonus smartphone holder',
+          'Built-in cable management system'
+        ],
+        course: 'Productivity & Time Management Mastery',
+        courseDesc: 'Master productivity techniques and achieve more in less time with this 30-hour comprehensive course. Learn time blocking, task prioritization using Eisenhower Matrix, digital organization, deep focus strategies, workflow optimization, goal setting and achievement, habit formation science, work-life balance, and stress management. Includes productivity tools and software tutorials (Notion, Todoist, RescueTime), customizable templates, weekly planners, and accountability system. Transform your productivity and reclaim your time.',
+        emoji: '💻',
+        rating: 4.7,
+        reviews: 1432,
+        inStock: true
+      },
+      {
+        id: 12,
+        title: 'Reusable Shopping Bags Set - 10 Pack Eco-Friendly Collection',
+        price: 400,
+        category: 'lifestyle',
+        icon: '♻️',
+        description: 'Machine Washable | Holds 50 lbs | Foldable | Recycled Materials',
+        amazonDesc: 'Reduce plastic waste and make a positive environmental impact with this durable, washable reusable shopping bag set. This 10-piece eco-friendly collection includes 5 large tote bags (15"x16"x6") perfect for groceries and shopping, 3 medium produce bags (12"x14") with drawstring closure for fruits and vegetables, and 2 small mesh bags (8"x10") ideal for bulk items and smaller produce. Made from 100% recycled post-consumer materials that are both strong and sustainable. Each large bag can hold up to 50 pounds - equivalent to 2-3 plastic grocery bags. Reinforced stitching ensures longevity. Machine washable for easy cleaning. All bags fold flat for compact storage and come with convenient storage pouch. Replace thousands of single-use plastic bags over the lifetime of this set.',
+        highlights: [
+          '10 reusable bags in assorted practical sizes',
+          'Made from 100% recycled materials',
+          'Each large bag holds up to 50 lbs',
+          'Machine washable for easy cleaning',
+          'Folds flat - includes storage pouch',
+          'Replace 1000+ plastic bags over lifetime'
+        ],
+        course: 'Eco Living Mini Course - Start Your Green Journey',
+        courseDesc: 'Take actionable steps toward a more sustainable lifestyle with this practical 20-hour mini course. Learn simple yet effective tips for reducing waste in daily life, choosing eco-friendly products, composting basics for apartments and houses, energy conservation hacks, sustainable shopping habits, plastic-free alternatives, and inspiring others to go green. Includes weekly eco-challenges, swaps checklist, eco-friendly product directory, carbon footprint calculator, and community support group access. Make a difference one choice at a time.',
+        emoji: '♻️',
+        rating: 4.9,
+        reviews: 5234,
+        inStock: true
+      }
+    ];
+
+    let cart = [];
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+      renderProducts();
+      updateCart();
+    });
+
+    // Scroll to section
+    function scrollToSection(id) {
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    // Filter by category
+    function filterByCategory(category) {
+      document.getElementById('categoryFilter').value = category;
+      filterProducts();
+      scrollToSection('products');
+    }
+
+    // Filter products
+    function filterProducts() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      const category = document.getElementById('categoryFilter').value;
+      
+      const filtered = PRODUCTS.filter(product => {
+        const matchesSearch = !searchTerm || 
+          product.title.toLowerCase().includes(searchTerm) ||
+          product.description.toLowerCase().includes(searchTerm) ||
+          product.course.toLowerCase().includes(searchTerm) ||
+          product.amazonDesc.toLowerCase().includes(searchTerm);
+        
+        const matchesCategory = !category || product.category === category;
+        
+        return matchesSearch && matchesCategory;
+      });
+      
+      renderProducts(filtered);
+    }
+
+    // Render products
+    function renderProducts(products = PRODUCTS) {
+      const grid = document.getElementById('productsGrid');
+      grid.innerHTML = '';
+      
+      if (products.length === 0) {
+        grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-light); padding: 3rem;">No products found. Try adjusting your filters.</p>';
+        return;
+      }
+      
+      products.forEach((product, index) => {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        card.style.animationDelay = `${index * 0.1}s`;
+        card.innerHTML = `
+          <div class="product-image">${product.icon}</div>
+          <div class="product-info">
+            <div class="prime-badge">🎓 FREE COURSE</div>
+            <h3 class="product-title">${product.title}</h3>
+            <p class="product-desc">${product.description}</p>
+            <div class="product-highlights">
+              <ul>
+                ${product.highlights.slice(0, 3).map(h => `<li>${h}</li>`).join('')}
+              </ul>
+            </div>
+            <div class="rating">
+              ${'★'.repeat(Math.floor(product.rating))}${'☆'.repeat(5 - Math.floor(product.rating))} 
+              ${product.rating} (${product.reviews.toLocaleString()})
+            </div>
+            <div class="stock-info">${product.inStock ? '✓ In Stock - Fast Delivery' : '✗ Out of Stock'}</div>
+            <div class="course-badge">
+              <span>${product.emoji}</span>
+              <span>${product.course}</span>
+            </div>
+            <div class="product-footer">
+              <span class="product-price">₹${product.price.toLocaleString()}</span>
+              <button class="add-to-cart" onclick="event.stopPropagation(); addToCart(${product.id})">Add to Cart</button>
+            </div>
+          </div>
+        `;
+        card.onclick = () => showProductModal(product.id);
+        grid.appendChild(card);
+      });
+    }
+
+    // Show product modal
+    function showProductModal(id) {
+      const product = PRODUCTS.find(p => p.id === id);
+      const modal = document.getElementById('modal');
+      modal.innerHTML = `
+        <div class="modal-header">
+          <h2>${product.title}</h2>
+          <button class="modal-close" onclick="closeModalDirect()">×</button>
+        </div>
+        <div class="modal-body">
+          <div class="modal-grid">
+            <div>
+              <div class="modal-image">${product.icon}</div>
+              <div style="margin-top: 1rem;">
+                <div class="rating" style="font-size: 1.1rem;">
+                  ${'★'.repeat(Math.floor(product.rating))}${'☆'.repeat(5 - Math.floor(product.rating))} 
+                  ${product.rating} out of 5
+                </div>
+                <p style="color: var(--text-light); margin-top: 0.5rem;">${product.reviews.toLocaleString()} customer reviews</p>
+                <div style="margin-top: 1rem;">
+                  <div class="prime-badge" style="font-size: 0.9rem;">🎓 FREE COURSE INCLUDED</div>
+                  <p style="color: var(--primary); font-weight: 700; margin-top: 0.5rem;">${product.inStock ? '✓ In Stock' : '✗ Currently Unavailable'}</p>
+                </div>
+              </div>
+            </div>
+            <div>
+              <h3 style="color: var(--primary); margin-bottom: 1rem; font-weight: 800;">About this item</h3>
+              <p style="margin-bottom: 1.5rem; line-height: 1.8; font-weight: 500;">${product.amazonDesc}</p>
+              
+              <div class="product-highlights" style="margin-bottom: 1.5rem;">
+                <h4 style="margin-bottom: 0.8rem; color: var(--primary); font-weight: 800;">Key Features:</h4>
+                <ul>
+                  ${product.highlights.map(h => `<li>${h}</li>`).join('')}
+                </ul>
+              </div>
+              
+              <div class="course-highlight">
+                <h3>${product.emoji} Bonus: Free Online Course!</h3>
+                <h4 style="margin: 0.5rem 0; color: #78350f;">${product.course}</h4>
+                <p>${product.courseDesc}</p>
+              </div>
+              
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; padding-top: 2rem; border-top: 3px solid rgba(99, 102, 241, 0.1);">
+                <div>
+                  <div style="font-size: 0.9rem; color: var(--text-light); font-weight: 600;">Price:</div>
+                  <span style="font-size: 2rem; font-weight: 900; background: var(--gradient-1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">₹${product.price.toLocaleString()}</span>
+                  <div style="font-size: 0.85rem; color: var(--text-light); margin-top: 0.3rem; font-weight: 600;">+ Free Course (Worth ₹${Math.floor(product.price * 0.3).toLocaleString()})</div>
+                </div>
+                <button class="btn btn-primary" onclick="addToCart(${product.id}); closeModalDirect();" style="padding: 1rem 2rem;">Add to Cart</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      document.getElementById('modalOverlay').classList.add('active');
+    }
+
+    // Show all courses
+    function showAllCourses() {
+      const modal = document.getElementById('modal');
+      const uniqueCourses = [...new Map(PRODUCTS.map(p => [p.course, p])).values()];
+      
+      modal.innerHTML = `
+        <div class="modal-header">
+          <h2>🎓 All Free Courses</h2>
+          <button class="modal-close" onclick="closeModalDirect()">×</button>
+        </div>
+        <div class="modal-body">
+          <p style="margin-bottom: 2rem; color: var(--text-light); font-size: 1.1rem; text-align: center; font-weight: 500;">Every product purchase unlocks a professionally designed course worth hundreds of rupees. Buy any product and start learning immediately with lifetime access!</p>
+          <div style="display: grid; gap: 1.5rem;">
+            ${uniqueCourses.map(p => `
+              <div style="background: var(--gradient-course); padding: 1.8rem; border-radius: 20px; border: 2px solid rgba(180, 83, 9, 0.2); box-shadow: 0 8px 20px rgba(252, 182, 159, 0.3);">
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                  <span style="font-size: 1.5rem;">${p.emoji}</span>
+                  <h3 style="margin: 0; color: #b45309; font-weight: 800;">${p.course}</h3>
+                </div>
+                <p style="color: #78350f; margin-bottom: 0.8rem; line-height: 1.6; font-weight: 500;">${p.courseDesc}</p>
+                <p style="font-size: 0.9rem; color: #78350f; margin: 0; font-weight: 600;">✓ Unlocked free with: <strong>${p.title}</strong> (₹${p.price.toLocaleString()})</p>
+              </div>
+            `).join('')}
+          </div>
+          <div style="text-align: center; margin-top: 2rem;">
+            <button class="btn btn-primary" onclick="closeModalDirect(); scrollToSection('products')">Start Shopping Now</button>
+          </div>
+        </div>
+      `;
+      document.getElementById('modalOverlay').classList.add('active');
+    }
+
+    // Show info modals
+    function showModal(type) {
+      const modal = document.getElementById('modal');
+      let content = '';
+      
+      switch(type) {
+        case 'faq':
+          content = `
+            <div class="modal-header">
+              <h2>❓ Frequently Asked Questions</h2>
+              <button class="modal-close" onclick="closeModalDirect()">×</button>
+            </div>
+            <div class="modal-body">
+              <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--primary); margin-bottom: 1rem; font-weight: 800;">Agreement to Terms</h3>
+                <p style="line-height: 1.8; font-weight: 500;">By accessing and using Skill Shack, you agree to be bound by these Terms and Conditions. If you disagree with any part of these terms, please do not use our website or services.</p>
+              </div>
+              
+              <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--primary); margin-bottom: 1rem; font-weight: 800;">Product Information</h3>
+                <p style="line-height: 1.8; font-weight: 500;">We strive to provide accurate product descriptions, images, and pricing. However, we do not warrant that product descriptions, colors, or other content is accurate, complete, or error-free. Prices are subject to change without notice.</p>
+              </div>
+              
+              <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--primary); margin-bottom: 1rem; font-weight: 800;">Course Access</h3>
+                <p style="line-height: 1.8; font-weight: 500;">
+                  • Each product purchase unlocks one associated course<br>
+                  • Course access is granted within 5 minutes of order confirmation<br>
+                  • Courses are for personal, non-commercial use only<br>
+                  • You may not share, reproduce, or distribute course content<br>
+                  • Course content is subject to updates and improvements<br>
+                  • Lifetime access means as long as Skill Shack operates
+                </p>
+              </div>
+              
+              <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--primary); margin-bottom: 1rem; font-weight: 800;">Orders and Payment</h3>
+                <p style="line-height: 1.8; font-weight: 500;">
+                  • We reserve the right to refuse or cancel any order<br>
+                  • Payment must be received before order dispatch<br>
+                  • All prices are in Indian Rupees (INR)<br>
+                  • You're responsible for providing accurate billing and shipping information<br>
+                  • Promotional codes cannot be combined unless specified
+                </p>
+              </div>
+
+              <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--primary); margin-bottom: 1rem; font-weight: 800;">Intellectual Property</h3>
+                <p style="line-height: 1.8; font-weight: 500;">All content on Skill Shack, including text, graphics, logos, images, course materials, and software, is the property of Skill Shack and protected by copyright and intellectual property laws.</p>
+              </div>
+
+              <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--primary); margin-bottom: 1rem; font-weight: 800;">Limitation of Liability</h3>
+                <p style="line-height: 1.8; font-weight: 500;">Skill Shack shall not be liable for any indirect, incidental, special, or consequential damages arising from your use of our products or courses. Our total liability is limited to the amount you paid for the product.</p>
+              </div>
+
+              <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--primary); margin-bottom: 1rem; font-weight: 800;">User Conduct</h3>
+                <p style="line-height: 1.8; font-weight: 500;">You agree not to use Skill Shack for any unlawful purpose, to violate any laws, to infringe on others' rights, or to distribute harmful code or content.</p>
+              </div>
+
+              <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--primary); margin-bottom: 1rem; font-weight: 800;">Governing Law</h3>
+                <p style="line-height: 1.8; font-weight: 500;">These Terms are governed by the laws of India. Any disputes shall be resolved in the courts of Hyderabad, Telangana.</p>
+              </div>
+
+              <div>
+                <h3 style="color: var(--primary); margin-bottom: 1rem; font-weight: 800;">Changes to Terms</h3>
+                <p style="line-height: 1.8; font-weight: 500;">We reserve the right to modify these Terms at any time. Changes will be effective immediately upon posting. Your continued use constitutes acceptance of modified Terms.</p>
+                <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-light); font-weight: 500;">Last updated: October 28, 2025</p>
+              </div>
+            </div>
+          `;
+          break;
+      }
+      
+      modal.innerHTML = content;
+      document.getElementById('modalOverlay').classList.add('active');
+    }
+
+    // Add to cart
+    function addToCart(productId) {
+      const product = PRODUCTS.find(p => p.id === productId);
+      const existingItem = cart.find(item => item.id === productId);
+      
+      if (existingItem) {
+        existingItem.quantity++;
+      } else {
+        cart.push({ ...product, quantity: 1 });
+      }
+      
+      updateCart();
+      showToast(`${product.icon} Added to cart!`);
+    }
+
+    // Update cart
+    function updateCart() {
+      const cartCount = document.getElementById('cartCount');
+      const cartItems = document.getElementById('cartItems');
+      const cartTotal = document.getElementById('cartTotal');
+      const coursesInfo = document.getElementById('coursesInfo');
+      
+      const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+      const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      const uniqueCourses = cart.length;
+      
+      cartCount.textContent = totalItems;
+      cartTotal.textContent = `₹${totalPrice.toLocaleString()}`;
+      coursesInfo.textContent = `🎓 ${uniqueCourses} Free Course${uniqueCourses !== 1 ? 's' : ''} Unlocked!`;
+      
+      if (cart.length === 0) {
+        cartItems.innerHTML = '<div class="empty-cart"><p style="font-weight: 600;">Your cart is empty</p><p style="font-size: 3rem; margin: 1rem 0;">🛒</p></div>';
+      } else {
+        cartItems.innerHTML = cart.map(item => `
+          <div class="cart-item">
+            <div class="cart-item-image">${item.icon}</div>
+            <div class="cart-item-info">
+              <div class="cart-item-title">${item.title}</div>
+              <div class="cart-item-course">🎓 ${item.course}</div>
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="qty-controls">
+                  <button class="qty-btn" onclick="updateQuantity(${item.id}, -1)">−</button>
+                  <span style="padding: 0 0.5rem; font-weight: 700;">${item.quantity}</span>
+                  <button class="qty-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+                </div>
+                <div style="font-weight: 800; background: var(--gradient-1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">₹${(item.price * item.quantity).toLocaleString()}</div>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+
+    // Update quantity
+    function updateQuantity(productId, change) {
+      const item = cart.find(i => i.id === productId);
+      if (!item) return;
+      
+      item.quantity += change;
+      
+      if (item.quantity <= 0) {
+        cart = cart.filter(i => i.id !== productId);
+      }
+      
+      updateCart();
+    }
+
+    // Toggle cart
+    function toggleCart() {
+      document.getElementById('cartSidebar').classList.toggle('active');
+    }
+
+    // Checkout
+    function checkout() {
+      if (cart.length === 0) {
+        showToast('Your cart is empty!');
+        return;
+      }
+      
+      const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      const uniqueCourses = cart.length;
+      const coursesList = cart.map(item => item.course).join(', ');
+      
+      alert(`🎉 Thank you for your order!\n\nOrder Summary:\n• Total: ₹${totalPrice.toLocaleString()}\n• ${uniqueCourses} Free Course${uniqueCourses !== 1 ? 's' : ''}: ${coursesList}\n\nYou'll receive course access credentials within 5 minutes at your email address.\n\nThis is a demo - no actual payment processed.`);
+      
+      cart = [];
+      updateCart();
+      toggleCart();
+    }
+
+    // Close modal
+    function closeModal(event) {
+      if (event.target === event.currentTarget) {
+        closeModalDirect();
+      }
+    }
+
+    function closeModalDirect() {
+      document.getElementById('modalOverlay').classList.remove('active');
+    }
+
+    // Show toast
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('active');
+      
+      setTimeout(() => {
+        toast.classList.remove('active');
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
+              <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--primary); margin-bottom: 0.5rem; font-weight: 800;">How do I access my free courses?</h3>
+                <p style="line-height: 1.8; font-weight: 500;">Once you complete your purchase, you'll receive an email within 5 minutes with login credentials to our Skill Shack Learning Platform. All your courses will be instantly available with lifetime access.</p>
+              </div>
+              
+              <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--primary); margin-bottom: 0.5rem; font-weight: 800;">Are the courses really free?</h3>
+                <p style="line-height: 1.8; font-weight: 500;">Yes! Every product includes a completely free, professionally designed course with no hidden fees, subscriptions, or additional costs. It's our way of investing in your growth.</p>
+              </div>
+              
+              <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--primary); margin-bottom: 0.5rem; font-weight: 800;">How long do I have access to the courses?</h3>
+                <p style="line-height: 1.8; font-weight: 500;">Lifetime access! Once you purchase a product, the associated course is yours forever. Learn at your own pace, revisit lessons anytime, and access new content updates.</p>
+              </div>
+              
+              <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--primary); margin-bottom: 0.5rem; font-weight: 800;">Can I gift products with courses?</h3>
+                <p style="line-height: 1.8; font-weight: 500;">Absolutely! Simply provide the recipient's email address during checkout, and they'll receive the course access credentials directly. Perfect for birthdays, holidays, or any special occasion.</p>
+              </div>
+              
+              <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--primary); margin-bottom: 0.5rem; font-weight: 800;">What if I'm not satisfied with my purchase?</h3>
+                <p style="line-height: 1.8; font-weight: 500;">We offer a hassle-free 30-day money-back guarantee on all products. If you're not completely satisfied, return the product for a full refund. You keep lifetime course access even after returns!</p>
+              </div>
+
+              <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--primary); margin-bottom: 0.5rem; font-weight: 800;">Do I need any prior experience for the courses?</h3>
+                <p style="line-height: 1.8; font-weight: 500;">No! Our courses are designed for all skill levels, from complete beginners to advanced learners. Each course starts with fundamentals and progressively builds your expertise.</p>
+              </div>
+
+              <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--primary); margin-bottom: 0.5rem; font-weight: 800;">Are the courses mobile-friendly?</h3>
+                <p style="line-height: 1.8; font-weight: 500;">Yes! Access your courses on any device - desktop, laptop, tablet, or smartphone. Learn anywhere, anytime with our responsive learning platform.</p>
+              </div>
+
+              <div>
+                <h3 style="color: var(--primary); margin-bottom: 0.5rem; font-weight: 800;">Do I get a certificate upon completion?</h3>
+                <p style="line-height: 1.8; font-weight: 500;">Yes! Upon completing a course, you'll receive a digital certificate of completion that you can share on LinkedIn, add to your resume, or display proudly.</p>
+              </div>
+            </div>
+          `;
+          break;
+        case 'shipping':
+          content = `
+            <div class="modal-header">
+              <h2>📦 Shipping Information</h2>
+              <button class="modal-close" onclick="closeModalDirect()">×</button>
+            </div>
+            <div class="modal-body">
+              <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--primary); margin-bottom: 1rem; font-weight: 800;">Delivery Times</h3>
+                <p style="line-height: 1.8; font-weight: 500;">
+                  • <strong>Metro Cities</strong> (Mumbai, Delhi, Bangalore, Hyderabad, Chennai, Kolkata): 2-3 business days<br>
+                  • <strong>Tier 2 Cities</strong> (Pune, Jaipur, Lucknow, Ahmedabad, etc.): 3-5 business days<br>
+                  • <strong>Other Locations</strong>: 5-7 business days<br>
+                  • <strong>Remote Areas</strong>: 7-10 business days
+                </p>
+              </div>
+              
+              <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--primary); margin-bottom: 1rem; font-weight: 800;">Shipping Costs</h3>
+                <p style="line-height: 1.8; font-weight: 500;">
+                  • Orders above ₹500: <strong>FREE shipping</strong> 🎉<br>
+                  • Orders below ₹500: ₹50 flat rate across India<br>
+                  • No hidden charges or handling fees
+                </p>
+              </div>
+              
+              <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--primary); margin-bottom: 1rem; font-weight: 800;">Order Tracking</h3>
+                <p style="line-height: 1.8; font-weight: 500;">You'll receive a tracking number via email and SMS once your order ships. Track your package in real-time through our website or directly on the courier's website. Updates include pickup, in-transit, out for delivery, and delivered status.</p>
+              </div>
+              
+              <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--primary); margin-bottom: 1rem; font-weight: 800;">Eco-Friendly Packaging</h3>
+                <p style="line-height: 1.8; font-weight: 500;">All orders are shipped using 100% recycled, biodegradable packaging materials. We use minimal plastic and opt for paper-based alternatives as part of our commitment to environmental sustainability.</p>
+              </div>
+
+              <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--primary); margin-bottom: 1rem; font-weight: 800;">Safe Delivery</h3>
+                <p style="line-height: 1.8; font-weight: 500;">Products are carefully packed to prevent damage during transit. Fragile items receive extra protective packaging. If your order arrives damaged, contact us immediately for a free replacement.</p>
+              </div>
+
+              <div>
+                <h3 style="color: var(--primary); margin-bottom: 1rem; font-weight: 800;">Cash on Delivery</h3>
+                <p style="line-height: 1.8; font-weight: 500;">COD available for orders under ₹10,000 with a small fee of ₹50. We recommend online payment for instant course access and faster processing.</p>
+              </div>
+            </div>
+          `;
+          break;
+        case 'returns':
+          content = `
+            <div class="modal-header">
+              <h2>🔄 Returns & Refunds</h2>
+              <button class="modal-close" onclick="closeModalDirect()">×</button>
+            </div>
+            <div class="modal-body">
+              <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--primary); margin-bottom: 1rem; font-weight: 800;">30-Day Return Policy</h3>
+                <p style="line-height: 1.8; font-weight: 500;">We offer a hassle-free 30-day return policy. If you're not completely satisfied with your purchase, return the product within 30 days for a full refund. No questions asked!</p>
+              </div>
+              
+              <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--primary); margin-bottom: 1rem; font-weight: 800;">How to Return</h3>
+                <p style="line-height: 1.8; font-weight: 500;">
+                  1. <strong>Contact Support:</strong> Email support@skillshack.com or call +91 1800-123-4567<br>
+                  2. <strong>Receive Label:</strong> We'll send you a prepaid return shipping label within 24 hours<br>
+                  3. <strong>Pack Securely:</strong> Place the item in original packaging (if available)<br>
+                  4. <strong>Ship It Back:</strong> Drop off at any courier location or schedule a pickup<br>
+                  5. <strong>Get Refund:</strong> Receive your full refund within 5-7 business days after we receive the item
+                </p>
+              </div>
+              
+              <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--primary); margin-bottom: 0.5rem; font-weight: 800;">Course Access After Returns</h3>
+                <p style="line-height: 1.8; font-weight: 500; background: var(--gradient-course); padding: 1.2rem; border-radius: 15px; border: 2px solid rgba(180, 83, 9, 0.2);">
+                  <strong>Special Benefit:</strong> Even if you return a product, you keep lifetime access to the associated course as our thank you for trying Skill Shack. Your education is our gift to you! 🎓
+                </p>
+              </div>
+              
+              <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--primary); margin-bottom: 1rem; font-weight: 800;">Return Conditions</h3>
+                <p style="line-height: 1.8; font-weight: 500;">
+                  • Products must be unused and in original condition<br>
+                  • Include all accessories, manuals, and packaging<br>
+                  • Items should not show signs of wear or damage<br>
+                  • Hygiene-related products (skincare, personal care) cannot be returned if opened
+                </p>
+              </div>
+
+              <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--primary); margin-bottom: 1rem; font-weight: 800;">Refund Method</h3>
+                <p style="line-height: 1.8; font-weight: 500;">Refunds are issued to the original payment method. Credit/debit card refunds may take 7-10 business days to reflect in your account. For COD orders, refunds are issued via bank transfer (provide account details).</p>
+              </div>
+
+              <div>
+                <h3 style="color: var(--primary); margin-bottom: 1rem; font-weight: 800;">Exchange Policy</h3>
+                <p style="line-height: 1.8; font-weight: 500;">Prefer an exchange? Contact our support team, and we'll help you swap for a different product or size (if applicable). Exchanges are subject to product availability.</p>
+              </div>
+            </div>
+          `;
+          break;
+        case 'privacy':
+          content = `
+            <div class="modal-header">
+              <h2>🔒 Privacy Policy</h2>
+              <button class="modal-close" onclick="closeModalDirect()">×</button>
+            </div>
+            <div class="modal-body">
+              <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--primary); margin-bottom: 1rem; font-weight: 800;">Your Privacy Matters</h3>
+                <p style="line-height: 1.8; font-weight: 500;">At Skill Shack, we take your privacy seriously and are committed to protecting your personal information. This policy outlines how we collect, use, store, and protect your data.</p>
+              </div>
+              
+              <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--primary); margin-bottom: 1rem; font-weight: 800;">Information We Collect</h3>
+                <p style="line-height: 1.8; font-weight: 500;">
+                  • <strong>Personal Information:</strong> Name, email address, phone number<br>
+                  • <strong>Shipping Details:</strong> Delivery address, billing address<br>
+                  • <strong>Payment Information:</strong> Securely processed through encrypted payment gateways (we never store card details)<br>
+                  • <strong>Learning Data:</strong> Course progress, quiz results, certificates earned<br>
+                  • <strong>Usage Information:</strong> Browsing behavior, product views, search queries
+                </p>
+              </div>
+              
+              <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--primary); margin-bottom: 1rem; font-weight: 800;">How We Use Your Information</h3>
+                <p style="line-height: 1.8; font-weight: 500;">
+                  • Process and fulfill your orders<br>
+                  • Provide access to free courses<br>
+                  • Send order updates, shipping notifications, and course reminders<br>
+                  • Improve our products, services, and user experience<br>
+                  • Personalize content and recommendations<br>
+                  • Respond to customer service inquiries<br>
+                  • Prevent fraud and enhance security
+                </p>
+              </div>
+              
+              <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--primary); margin-bottom: 1rem; font-weight: 800;">Data Security</h3>
+                <p style="line-height: 1.8; font-weight: 500;">We use industry-standard SSL encryption to protect your data during transmission. All sensitive information is stored on secure servers with restricted access. Our payment processing is PCI-DSS compliant.</p>
+              </div>
+
+              <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--primary); margin-bottom: 1rem; font-weight: 800;">Data Sharing</h3>
+                <p style="line-height: 1.8; font-weight: 500;">We do NOT sell, rent, or trade your personal information to third parties. We only share data with trusted service providers (shipping partners, payment processors) necessary to fulfill your orders. These partners are bound by strict confidentiality agreements.</p>
+              </div>
+
+              <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--primary); margin-bottom: 1rem; font-weight: 800;">Your Rights</h3>
+                <p style="line-height: 1.8; font-weight: 500;">
+                  • Access your personal data<br>
+                  • Request data correction or deletion<br>
+                  • Opt-out of marketing communications<br>
+                  • Download your data<br>
+                  • Lodge complaints with data protection authorities
+                </p>
+              </div>
+
+              <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--primary); margin-bottom: 1rem; font-weight: 800;">Cookies</h3>
+                <p style="line-height: 1.8; font-weight: 500;">We use cookies to enhance your browsing experience, remember your preferences, and analyze website traffic. You can control cookie settings in your browser.</p>
+              </div>
+
+              <div>
+                <h3 style="color: var(--primary); margin-bottom: 1rem; font-weight: 800;">Contact Us</h3>
+                <p style="line-height: 1.8; font-weight: 500;">For privacy-related questions or concerns, contact our Data Protection Officer at privacy@skillshack.com</p>
+                <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-light); font-weight: 500;">Last updated: October 28, 2025</p>
+              </div>
+            </div>
+          `;
+          break;
+        case 'terms':
+          content = `
+            <div class="modal-header">
+              <h2>📜 Terms & Conditions</h2>
+              <button class="modal-close" onclick="closeModalDirect()">×</button>
+            </div>
+            <div class="modal-body">
